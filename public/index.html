@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Moodboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #f0f0ee;
+      --text-secondary: #999999;
+      --text-tertiary: #555555;
+      --bg-primary: #111111;
+      --bg-secondary: #1a1a1a;
+      --border-primary: #f0f0ee;
+      --border-secondary: #2e2e2e;
+      --border-tertiary: #222222;
+      --danger: #ff4422;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .wordmark {
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: .4rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: .6rem;
+      margin-top: 1.8rem;
+    }
+
+    .optional {
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text-tertiary);
+    }
+
+    .text-input {
+      font-size: 13px;
+      padding: 9px 12px;
+      border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      width: 100%;
+      transition: border-color .15s;
+    }
+
+    .text-input:focus { border-color: var(--border-primary); }
+    .text-input::placeholder { color: var(--text-tertiary); }
+
+    /* Personality pills */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .feel-pill {
+      font-size: 12px;
+      padding: 6px 13px;
+      border-radius: 20px;
+      border: .5px solid var(--border-tertiary);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .feel-pill:hover:not(.locked) {
+      border-color: var(--border-secondary);
+      background: var(--bg-secondary);
+    }
+
+    .feel-pill.active {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-color: var(--text-primary);
+    }
+
+    .feel-pill.locked {
+      opacity: .25;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Format cards */
+    .format-group-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: .6rem;
+      margin-top: 1.2rem;
+    }
+
+    .format-cards { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+    .fmt-card {
+      border: .5px solid var(--border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 10px 10px 7px;
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--bg-primary);
+      text-align: center;
+      width: 88px;
+    }
+
+    .fmt-card:hover { border-color: var(--border-secondary); }
+    .fmt-card.active { border: 1.5px solid var(--text-primary); }
+
+    .fmt-card svg { display: block; margin: 0 auto 5px; }
+
+    .fmt-card-name {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: .03em;
+    }
+
+    .fmt-card.active .fmt-card-name { color: var(--text-primary); }
+
+    .fmt-none {
+      border: .5px solid var(--border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 10px 10px 7px;
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--bg-primary);
+      text-align: center;
+      width: 88px;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .fmt-none:hover { border-color: var(--border-secondary); }
+    .fmt-none.active { border: 1.5px solid var(--text-primary); }
+
+    .fmt-none-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: .03em;
+    }
+
+    .fmt-none.active .fmt-none-label { color: var(--text-primary); }
+
+    /* CTA */
+    .cta-btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 11px 24px;
+      border-radius: 6px;
+      border: none;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      cursor: pointer;
+      transition: opacity .15s;
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-btn:hover { opacity: .82; }
+    .cta-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .spin {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      border: 1.5px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error */
+    .err {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: .75rem;
+      padding: .6rem 1rem;
+      border: .5px solid var(--danger);
+      border-radius: var(--radius-md);
+      display: none;
+    }
+
+    /* Success */
+    .success {
+      display: none;
+      margin-top: 2.5rem;
+      padding: 2rem;
+      border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 20px;
+      color: var(--text-secondary);
+      margin-bottom: .75rem;
+    }
+
+    .success-title {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: .4rem;
+    }
+
+    .success-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .chip {
+      font-size: 13px;
+      padding: 8px 12px 8px 14px;
+      border-radius: 20px;
+      border: .5px solid var(--border-secondary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all .2s;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .chip:hover {
+      background: #e60023;
+      color: #fff;
+      border-color: #e60023;
+    }
+
+    .chip-pinterest {
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity .15s;
+      flex-shrink: 0;
+    }
+
+    .chip:hover .chip-pinterest { opacity: 1; }
+
+    .chip-copy {
+      display: flex;
+      align-items: center;
+      padding: 2px 4px;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity .15s, background .15s;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .chip:hover .chip-copy { opacity: .6; }
+    .chip-copy:hover { opacity: 1 !important; background: rgba(255,255,255,.2); }
+    .chip-copy.copied { opacity: 1 !important; }
+
+    .chip-copy svg, .chip-pinterest svg { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wordmark">Logo &amp; brand moodboard</div>
+    <h1>Find your<br><em>visual direction</em></h1>
+    <p class="sub">Tell us about your brand. We'll send you Pinterest search queries to build your visual direction.</p>
+
+    <div class="step-label">Brand name</div>
+    <input class="text-input" id="brand-name" type="text" placeholder="e.g. Volta">
+
+    <div class="step-label" style="margin-top:1rem">What you do</div>
+    <input class="text-input" id="brand-desc" type="text" placeholder="e.g. electric bike subscription for cities">
+
+    <div class="step-label">Personality — pick up to 2</div>
+    <div class="pill-row" id="feel-row"></div>
+
+    <div class="step-label">Logo format — select at least one</div>
+    <div class="format-group-label">Logotype</div>
+    <div class="format-cards" id="logotype-row"></div>
+    <div class="format-group-label">Isotype</div>
+    <div class="format-cards" id="isotype-row"></div>
+
+    <div class="step-label">What to avoid <span class="optional">— optional</span></div>
+    <input class="text-input" id="avoid" type="text" placeholder="e.g. gradients, fintech clichés">
+
+    <div class="step-label">Any brand reference <span class="optional">— optional</span></div>
+    <input class="text-input" id="brand-ref" type="text" placeholder="e.g. Apple, Stripe, early Nike">
+
+    <button class="cta-btn" id="cta-btn">Send form →</button>
+    <div class="err" id="err"></div>
+
+    <div class="success" id="success">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Brief sent.</div>
+      <div class="success-sub">We'll get back to you with your visual direction.</div>
+    </div>
+  </div>
+
+  <script>
+    var selFeels = [];
+    var selLogotypes = [];
+    var selIsotypes = [];
+    var isNoneIsotype = false;
+
+    var FEELS = ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'];
+
+    var LOGOTYPES = [
+      { id: 'wordmark', name: 'Wordmark', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="26" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
+      { id: 'lettermark', name: 'Lettermark', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="27" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#f0f0ee" text-anchor="middle" letter-spacing="1">AB</text></svg>' },
+    ];
+
+    var ISOTYPES = [
+      { id: 'symbol', name: 'Symbol', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><rect x="10" y="12" width="16" height="16" rx="2" fill="#f0f0ee"/><text x="42" y="26" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
+      { id: 'emblem', name: 'Emblem', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="30" cy="20" r="14" fill="none" stroke="#f0f0ee" stroke-width="1.2"/><text x="30" y="25" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#f0f0ee" text-anchor="middle">AB</text></svg>' },
+      { id: 'abstract', name: 'Abstract', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="25" cy="20" r="10" fill="#f0f0ee"/><circle cx="35" cy="20" r="10" fill="#1a1a1a"/><circle cx="35" cy="20" r="10" fill="none" stroke="#f0f0ee" stroke-width="1.2"/></svg>' },
+    ];
+
+    var feelRow = document.getElementById('feel-row');
+    FEELS.forEach(function(f) {
+      var btn = document.createElement('button');
+      btn.className = 'feel-pill';
+      btn.textContent = f;
+      btn.addEventListener('click', function() {
+        var idx = selFeels.indexOf(f);
+        if (idx > -1) { selFeels.splice(idx, 1); btn.classList.remove('active'); }
+        else if (selFeels.length < 2) { selFeels.push(f); btn.classList.add('active'); }
+        feelRow.querySelectorAll('.feel-pill').forEach(function(b) {
+          if (!b.classList.contains('active')) {
+            if (selFeels.length >= 2) b.classList.add('locked');
+            else b.classList.remove('locked');
+          }
+        });
+      });
+      feelRow.appendChild(btn);
+    });
+
+    function buildCards(containerId, items, selArr) {
+      var row = document.getElementById(containerId);
+      items.forEach(function(item) {
+        var card = document.createElement('div');
+        card.className = 'fmt-card';
+        card.innerHTML = item.svg + '<div class="fmt-card-name">' + item.name + '</div>';
+        card.addEventListener('click', function() {
+          if (containerId === 'isotype-row' && isNoneIsotype) {
+            isNoneIsotype = false;
+            document.getElementById('none-isotype').classList.remove('active');
+          }
+          var idx = selArr.indexOf(item.id);
+          if (idx > -1) { selArr.splice(idx, 1); card.classList.remove('active'); }
+          else { selArr.push(item.id); card.classList.add('active'); }
+        });
+        row.appendChild(card);
+      });
+    }
+
+    buildCards('logotype-row', LOGOTYPES, selLogotypes);
+    buildCards('isotype-row', ISOTYPES, selIsotypes);
+
+    var noneBtn = document.createElement('button');
+    noneBtn.className = 'fmt-none';
+    noneBtn.id = 'none-isotype';
+    noneBtn.innerHTML = '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><line x1="18" y1="20" x2="42" y2="20" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg><div class="fmt-none-label">None</div>';
+    noneBtn.addEventListener('click', function() {
+      selIsotypes.length = 0;
+      document.querySelectorAll('#isotype-row .fmt-card').forEach(function(c) { c.classList.remove('active'); });
+      isNoneIsotype = !isNoneIsotype;
+      noneBtn.classList.toggle('active', isNoneIsotype);
+    });
+    document.getElementById('isotype-row').appendChild(noneBtn);
+
+    document.getElementById('cta-btn').addEventListener('click', async function() {
+      var name = document.getElementById('brand-name').value.trim();
+      var desc = document.getElementById('brand-desc').value.trim();
+      var avoid = document.getElementById('avoid').value.trim();
+      var brandRef = document.getElementById('brand-ref').value.trim();
+      var errEl = document.getElementById('err');
+      errEl.style.display = 'none';
+
+      if (!name) { showErr('Add your brand name.'); return; }
+      if (!desc) { showErr('Add what you do.'); return; }
+      if (selFeels.length === 0) { showErr('Pick at least one personality trait.'); return; }
+      if (selLogotypes.length === 0 && selIsotypes.length === 0 && !isNoneIsotype) { showErr('Select at least one logo format.'); return; }
+      if (selLogotypes.length === 0 && isNoneIsotype) { showErr('Select at least one logotype.'); return; }
+
+      var btn = document.getElementById('cta-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spin"></span> Generating…';
+
+      try {
+        var res = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, desc,
+            feels: selFeels,
+            logotypes: selLogotypes,
+            isotypes: selIsotypes,
+            isNone: isNoneIsotype,
+            avoid, brandRef
+          })
+        });
+
+        var data = await res.json();
+
+        if (!res.ok || data.error) {
+          showErr(data.error || 'Something went wrong.');
+        } else {
+          document.getElementById('success').style.display = 'block';
+          document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } catch(e) {
+        showErr('Network error: ' + e.message);
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = 'Create search queries →';
+    });
+
+    function showErr(msg) {
+      var el = document.getElementById('err');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function renderChips(keywords) {
+      var wrap = document.getElementById('chips-wrap');
+      wrap.innerHTML = '';
+      keywords.forEach(function(k) {
+        var url = 'https://www.pinterest.com/search/pins/?q=' + encodeURIComponent(k.query);
+
+        var chip = document.createElement('a');
+        chip.className = 'chip';
+        chip.href = url;
+        chip.target = '_blank';
+        chip.rel = 'noopener noreferrer';
+        chip.innerHTML = '<span class="chip-query">' + k.query + '</span>'
+          + '<span class="chip-pinterest"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></span>'
+          + '<span class="chip-copy" title="Copy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>';
+
+        var copyBtn = chip.querySelector('.chip-copy');
+        copyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          navigator.clipboard.writeText(k.query).then(function() {
+            copyBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            setTimeout(function() {
+              copyBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            }, 2000);
+          });
+        });
+
+        wrap.appendChild(chip);
+      });
+      var results = document.getElementById('results');
+      results.style.display = 'block';
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>
