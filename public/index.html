@@ -227,7 +227,7 @@
     .color-section-wrap { position: relative; }
 
     .color-trigger {
-      display: flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       border: .5px solid var(--border-secondary);
       border-radius: var(--radius-md);
       padding: 7px 12px;
@@ -238,7 +238,7 @@
 
     .color-trigger-input {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px; flex: 1;
+      font-size: 13px; width: 140px;
       background: transparent; border: none; outline: none;
       color: var(--text-primary);
     }
@@ -251,7 +251,7 @@
     }
 
     .color-dropdown {
-      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      position: absolute; top: calc(100% + 4px); left: 0; min-width: 180px;
       background: #1a1a1a;
       border: .5px solid var(--border-secondary);
       border-radius: var(--radius-md);
@@ -571,8 +571,8 @@
             <legend class="field-legend"><span data-i18n="colors">Brand color</span> <span class="optional" data-i18n="optional">— optional</span></legend>
             <div class="color-section-wrap">
               <div class="color-trigger" id="color-trigger-wrap">
-                <input class="color-trigger-input" id="color-input" type="text" autocomplete="off" spellcheck="false" aria-label="Brand color" aria-haspopup="listbox" aria-autocomplete="list" data-i18n-placeholder="noneLabel">
                 <span class="color-trigger-dot" id="color-trigger-dot"></span>
+                <input class="color-trigger-input" id="color-input" type="text" autocomplete="off" spellcheck="false" aria-label="Brand color" aria-haspopup="listbox" aria-autocomplete="list" data-i18n-placeholder="noneLabel">
               </div>
               <div class="color-dropdown" id="color-dropdown" role="listbox"></div>
               <div class="cp-flyout" id="cp-flyout">
@@ -1196,7 +1196,7 @@
       document.getElementById('color-dropdown').addEventListener('mousedown', function(e){ e.preventDefault(); }); // keep input focus
       document.getElementById('color-dropdown').addEventListener('click', function(e){ e.stopPropagation(); });
 
-      inp.addEventListener('focus', function(){ renderDropdown(''); openColorDropdown(); });
+      inp.addEventListener('focus', function(){ renderDropdown(this.value); openColorDropdown(); });
       inp.addEventListener('input', function(){ handleColorInput(this.value); });
       inp.addEventListener('keydown', function(e){
         if(e.key==='Escape'||e.key==='Enter'){ closeColorDropdown(); inp.blur(); }
