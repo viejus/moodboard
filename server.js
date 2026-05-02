@@ -3,6 +3,7 @@ const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 const { Resend } = require('resend');
 const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const client = new Anthropic();
@@ -16,6 +17,15 @@ const upload = multer({
     else cb(new Error('Only image files are allowed'));
   }
 });
+
+// ── Clean URL routes ──────────────────────────────────────────────────────────
+const logo = (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'));
+const book = (req, res) => res.sendFile(path.join(__dirname, 'public/book.html'));
+
+app.get('/',        logo);
+app.get('/es',      logo);
+app.get('/book',    book);
+app.get('/es/book', book);
 
 app.use(express.static('public'));
 
