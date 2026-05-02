@@ -497,6 +497,12 @@
     /* Field error states */
     .field-error { border-color: var(--danger) !important; }
     .group-error { box-shadow: 0 0 0 1px var(--danger); border-radius: var(--radius-sm); }
+    .field-hint {
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 6px;
+      display: none;
+    }
 
     /* Network error */
     .err {
@@ -541,11 +547,13 @@
         <div class="field-group">
           <label class="field-label" for="brand-name" data-i18n="brandName">Brand name</label>
           <input class="text-input" id="brand-name" type="text" autocomplete="organization" data-i18n-placeholder="brandNamePh">
+          <p class="field-hint" id="hint-name" role="alert"></p>
         </div>
 
         <div class="field-group">
           <label class="field-label" for="brand-desc" data-i18n="whatYouDo">What you do</label>
           <input class="text-input" id="brand-desc" type="text" data-i18n-placeholder="whatYouDoPh">
+          <p class="field-hint" id="hint-desc" role="alert"></p>
         </div>
 
         <div class="field-group">
@@ -555,6 +563,7 @@
             <div class="feel-other-wrap" id="feel-other-wrap">
               <input class="feel-other-input" id="feel-other-input" maxlength="20" autocomplete="off" spellcheck="false" aria-label="Describe the feeling" data-i18n-placeholder="otherPh">
             </div>
+            <p class="field-hint" id="hint-personality" role="alert"></p>
           </fieldset>
         </div>
 
@@ -563,10 +572,12 @@
             <legend class="field-legend" data-i18n="logoFormat">Logo format — select at least one</legend>
             <div class="format-sub-label" aria-hidden="true" data-i18n="logotype">Logotype</div>
             <div class="format-cards" id="logotype-row" role="group"></div>
+            <p class="field-hint" id="hint-logotype" role="alert"></p>
             <div class="format-sub-label" style="margin-top:.9rem;" aria-hidden="true"><span data-i18n="typeStyle">Logotype style</span> <span class="optional" data-i18n="optional">— optional</span></div>
             <div class="pill-row" id="type-row" role="group"></div>
             <div class="format-sub-label" aria-hidden="true" data-i18n="isotype">Isotype</div>
             <div class="format-cards" id="isotype-row" role="group"></div>
+            <p class="field-hint" id="hint-isotype" role="alert"></p>
           </fieldset>
         </div>
 
@@ -618,6 +629,7 @@
         <div class="field-group">
           <label class="field-label" for="client-email" data-i18n="email">Your email</label>
           <input class="text-input" id="client-email" type="email" autocomplete="email" required data-i18n-placeholder="emailPh">
+          <p class="field-hint" id="hint-email" role="alert"></p>
         </div>
 
         <button class="cta-btn" id="cta-btn" type="submit" data-i18n="submit">Send form →</button>
@@ -1251,12 +1263,20 @@
     function clearFieldErrors() {
       document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
       document.querySelectorAll('.group-error').forEach(function(el) { el.classList.remove('group-error'); });
+      document.querySelectorAll('.field-hint').forEach(function(el) { el.style.display = 'none'; el.textContent = ''; });
     }
 
-    // Clear field error on fix
-    ['brand-name','brand-desc','client-email'].forEach(function(id) {
-      document.getElementById(id).addEventListener('input', function() {
+    function showHint(id, msg) {
+      var el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    // Clear field error + hint on fix
+    [['brand-name','hint-name'],['brand-desc','hint-desc'],['client-email','hint-email']].forEach(function(pair) {
+      document.getElementById(pair[0]).addEventListener('input', function() {
         this.classList.remove('field-error');
+        var h = document.getElementById(pair[1]);
+        if (h) { h.style.display = 'none'; h.textContent = ''; }
       });
     });
 
@@ -1275,13 +1295,29 @@
 
       var hasErrors = false;
 
-      if (!name)   { document.getElementById('brand-name').classList.add('field-error'); hasErrors = true; }
-      if (!desc)   { document.getElementById('brand-desc').classList.add('field-error'); hasErrors = true; }
-      if (!selFeels.length && !otherPillSelected) { document.getElementById('feel-row').classList.add('group-error'); hasErrors = true; }
-      if (!selLogotypes.length) { document.getElementById('logotype-row').classList.add('group-error'); hasErrors = true; }
-      if (!selIsotypes.length && !isNoneIsotype) { document.getElementById('isotype-row').classList.add('group-error'); hasErrors = true; }
+      if (!name) {
+        document.getElementById('brand-name').classList.add('field-error');
+        showHint('hint-name', t('errName')); hasErrors = true;
+      }
+      if (!desc) {
+        document.getElementById('brand-desc').classList.add('field-error');
+        showHint('hint-desc', t('errDesc')); hasErrors = true;
+      }
+      if (!selFeels.length && !otherPillSelected) {
+        document.getElementById('feel-row').classList.add('group-error');
+        showHint('hint-personality', t('errPersonality')); hasErrors = true;
+      }
+      if (!selLogotypes.length) {
+        document.getElementById('logotype-row').classList.add('group-error');
+        showHint('hint-logotype', t('errLogotype')); hasErrors = true;
+      }
+      if (!selIsotypes.length && !isNoneIsotype) {
+        document.getElementById('isotype-row').classList.add('group-error');
+        showHint('hint-isotype', t('errFormat')); hasErrors = true;
+      }
       if (!clientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
-        document.getElementById('client-email').classList.add('field-error'); hasErrors = true;
+        document.getElementById('client-email').classList.add('field-error');
+        showHint('hint-email', !clientEmail ? t('errEmail') : t('errEmailInvalid')); hasErrors = true;
       }
 
       if (hasErrors) return;
