@@ -21,7 +21,7 @@ app.use(express.static('public'));
 
 app.post('/api/submit', upload.array('images', 5), async (req, res) => {
   const {
-    name, desc, avoid, brandRef, notes, clientEmail
+    name, desc, avoid, brandRef, notes, clientEmail, color
   } = req.body;
 
   const feels      = JSON.parse(req.body.feels      || '[]');
@@ -47,6 +47,7 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
     brandRef ? 'Brand reference: ' + brandRef + ' — extract visual DNA from this brand (materials, type style, era, construction) and let it inform the queries without naming the brand directly' : '',
     typeStyles.length > 0 ? 'Logotype type style: ' + typeStyles.join(', ') + ' — prioritise queries that reference this typographic style' : '',
     notes ? 'Additional context: ' + notes : '',
+    color ? 'Brand color: ' + color + ' — this is an accent colour the client identified; inform palette direction without forcing it' : '',
     hasImages ? 'Visual references: ' + images.length + ' image(s) provided above — extract aesthetic qualities, materials, colour palette, and construction style to inform queries' : '',
     '',
     'Respond with ONLY a raw JSON array — no markdown, no explanation. Generate ' + (hasImages ? '10' : '8') + ' Pinterest-style search keywords, 2-5 words each.',
@@ -112,6 +113,7 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
       avoid ? ['Avoid', avoid] : null,
       brandRef ? ['Brand reference', brandRef] : null,
       notes ? ['Notes', notes] : null,
+      color ? ['Brand color', color] : null,
       hasImages ? ['Images', images.length + ' reference image(s) provided'] : null,
     ].filter(Boolean).map(([label, value]) => `
       <tr>
