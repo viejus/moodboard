@@ -18,7 +18,7 @@
       --border-primary: #f0f0ee;
       --border-secondary: #2e2e2e;
       --border-tertiary: #222222;
-      --danger: #ff6644;
+      --danger: #AF1133;
       --focus: #f0f0ee;
       --radius-sm: 4px;
       --radius-md: 8px;
@@ -494,7 +494,11 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Error */
+    /* Field error states */
+    .field-error { border-color: var(--danger) !important; }
+    .group-error { box-shadow: 0 0 0 1px var(--danger); border-radius: var(--radius-sm); }
+
+    /* Network error */
     .err {
       font-size: 12px;
       color: var(--danger);
@@ -1244,6 +1248,18 @@
     }
 
     // ─── Form submit ─────────────────────────────────────────────────────────
+    function clearFieldErrors() {
+      document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
+      document.querySelectorAll('.group-error').forEach(function(el) { el.classList.remove('group-error'); });
+    }
+
+    // Clear field error on fix
+    ['brand-name','brand-desc','client-email'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('field-error');
+      });
+    });
+
     document.getElementById('brief-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -1254,15 +1270,21 @@
       var notes       = document.getElementById('notes').value.trim();
       var clientEmail = document.getElementById('client-email').value.trim();
 
+      clearFieldErrors();
       document.getElementById('err').style.display = 'none';
 
-      if (!name)        { showErr(t('errName'));        document.getElementById('brand-name').focus();    return; }
-      if (!desc)        { showErr(t('errDesc'));        document.getElementById('brand-desc').focus();    return; }
-      if (!selFeels.length && !otherPillSelected) { showErr(t('errPersonality')); return; }
-      if (!selLogotypes.length && !selIsotypes.length && !isNoneIsotype) { showErr(t('errFormat')); return; }
-      if (!selLogotypes.length && isNoneIsotype) { showErr(t('errLogotype')); return; }
-      if (!clientEmail) { showErr(t('errEmail'));       document.getElementById('client-email').focus();  return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) { showErr(t('errEmailInvalid')); document.getElementById('client-email').focus(); return; }
+      var hasErrors = false;
+
+      if (!name)   { document.getElementById('brand-name').classList.add('field-error'); hasErrors = true; }
+      if (!desc)   { document.getElementById('brand-desc').classList.add('field-error'); hasErrors = true; }
+      if (!selFeels.length && !otherPillSelected) { document.getElementById('feel-row').classList.add('group-error'); hasErrors = true; }
+      if (!selLogotypes.length) { document.getElementById('logotype-row').classList.add('group-error'); hasErrors = true; }
+      if (!selIsotypes.length && !isNoneIsotype) { document.getElementById('isotype-row').classList.add('group-error'); hasErrors = true; }
+      if (!clientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+        document.getElementById('client-email').classList.add('field-error'); hasErrors = true;
+      }
+
+      if (hasErrors) return;
 
       var btn = document.getElementById('cta-btn');
       btn.disabled = true;
@@ -1291,7 +1313,9 @@
         var data = await res.json();
 
         if (!res.ok || data.error) {
-          showErr(data.error || 'Something went wrong.');
+          var errEl = document.getElementById('err');
+          errEl.textContent = data.error || 'Something went wrong.';
+          errEl.style.display = 'block';
         } else {
           var el = document.getElementById('success');
           el.style.display = 'block';
@@ -1299,19 +1323,15 @@
           el.focus();
         }
       } catch (err) {
-        showErr('Network error: ' + err.message);
+        var errEl = document.getElementById('err');
+        errEl.textContent = 'Network error: ' + err.message;
+        errEl.style.display = 'block';
       }
 
       btn.disabled = false;
       btn.removeAttribute('aria-busy');
       btn.innerHTML = t('submit');
     });
-
-    function showErr(msg) {
-      var el = document.getElementById('err');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
 
     // ─── Init ────────────────────────────────────────────────────────────────
     applyLanguage();
