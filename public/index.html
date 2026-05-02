@@ -680,7 +680,6 @@
         emailPh: 'you@example.com',
         colors: 'Brand color',
         colorCustom: 'Custom',
-        colorNames: ['White','Black','Blue','Red','Orange','Purple','Light blue','Green','Yellow','Brown','Gray'],
         otherLabel: 'Other',
         otherPh: 'Describe it…',
         feels: ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'],
@@ -733,7 +732,6 @@
         emailPh: 'tú@ejemplo.com',
         colors: 'Color de marca',
         colorCustom: 'Personalizado',
-        colorNames: ['Blanco','Negro','Azul','Rojo','Naranja','Morado','Azul claro','Verde','Amarillo','Marrón','Gris'],
         otherLabel: 'Otro',
         otherPh: 'Descríbelo…',
         feels: ['Audaz','Minimalista','Juguetón','Serio','Cálido','Cool','Lujoso','Accesible','Irreverente','Confiable','Orgánico','Técnico'],
@@ -790,12 +788,15 @@
 
     // ─── Color presets ───────────────────────────────────────────────────────
     var PRESET_COLORS = [
-      { id: 'white',     hex: '#ffffff' }, { id: 'black',     hex: '#111111' },
-      { id: 'blue',      hex: '#2563eb' }, { id: 'red',       hex: '#dc2626' },
-      { id: 'orange',    hex: '#ea580c' }, { id: 'purple',    hex: '#7c3aed' },
-      { id: 'lightblue', hex: '#38bdf8' }, { id: 'green',     hex: '#16a34a' },
-      { id: 'yellow',    hex: '#eab308' }, { id: 'brown',     hex: '#92400e' },
-      { id: 'gray',      hex: '#6b7280' },
+      { name: 'White',    hex: '#ffffff' }, { name: 'Black',   hex: '#111111' },
+      { name: 'Navy',     hex: '#1e3a5f' }, { name: 'Blue',    hex: '#2563eb' },
+      { name: 'Sky Blue', hex: '#38bdf8' }, { name: 'Teal',    hex: '#0d9488' },
+      { name: 'Green',    hex: '#16a34a' }, { name: 'Lime',    hex: '#84cc16' },
+      { name: 'Yellow',   hex: '#eab308' }, { name: 'Gold',    hex: '#b45309' },
+      { name: 'Orange',   hex: '#ea580c' }, { name: 'Red',     hex: '#dc2626' },
+      { name: 'Pink',     hex: '#ec4899' }, { name: 'Purple',  hex: '#7c3aed' },
+      { name: 'Maroon',   hex: '#7f1d1d' }, { name: 'Brown',   hex: '#92400e' },
+      { name: 'Gray',     hex: '#6b7280' }, { name: 'Silver',  hex: '#c0c0c0' },
     ];
 
     var LOGOTYPES = [
@@ -997,133 +998,20 @@
       return card;
     }
 
-    // ─── Color name database ─────────────────────────────────────────────────
-    var COLOR_NAMES = [
-      ['Alice Blue','#f0f8ff'],['Antique White','#faebd7'],['Aqua','#00ffff'],
-      ['Aquamarine','#7fffd4'],['Azure','#f0ffff'],['Beige','#f5f5dc'],
-      ['Bisque','#ffe4c4'],['Black','#000000'],['Blanched Almond','#ffebcd'],
-      ['Blue','#0000ff'],['Blue Violet','#8a2be2'],['Brown','#a52a2a'],
-      ['Burlywood','#deb887'],['Cadet Blue','#5f9ea0'],['Chartreuse','#7fff00'],
-      ['Chocolate','#d2691e'],['Coral','#ff7f50'],['Cornflower Blue','#6495ed'],
-      ['Cornsilk','#fff8dc'],['Crimson','#dc143c'],['Cyan','#00ffff'],
-      ['Dark Blue','#00008b'],['Dark Cyan','#008b8b'],['Dark Goldenrod','#b8860b'],
-      ['Dark Gray','#a9a9a9'],['Dark Green','#006400'],['Dark Khaki','#bdb76b'],
-      ['Dark Magenta','#8b008b'],['Dark Olive Green','#556b2f'],['Dark Orange','#ff8c00'],
-      ['Dark Orchid','#9932cc'],['Dark Red','#8b0000'],['Dark Salmon','#e9967a'],
-      ['Dark Sea Green','#8fbc8f'],['Dark Slate Blue','#483d8b'],['Dark Slate Gray','#2f4f4f'],
-      ['Dark Turquoise','#00ced1'],['Dark Violet','#9400d3'],['Deep Pink','#ff1493'],
-      ['Deep Sky Blue','#00bfff'],['Dim Gray','#696969'],['Dodger Blue','#1e90ff'],
-      ['Firebrick','#b22222'],['Floral White','#fffaf0'],['Forest Green','#228b22'],
-      ['Fuchsia','#ff00ff'],['Gainsboro','#dcdcdc'],['Ghost White','#f8f8ff'],
-      ['Gold','#ffd700'],['Goldenrod','#daa520'],['Gray','#808080'],
-      ['Green','#008000'],['Green Yellow','#adff2f'],['Honeydew','#f0fff0'],
-      ['Hot Pink','#ff69b4'],['Indian Red','#cd5c5c'],['Indigo','#4b0082'],
-      ['Ivory','#fffff0'],['Khaki','#f0e68c'],['Lavender','#e6e6fa'],
-      ['Lavender Blush','#fff0f5'],['Lawn Green','#7cfc00'],['Lemon Chiffon','#fffacd'],
-      ['Light Blue','#add8e6'],['Light Coral','#f08080'],['Light Cyan','#e0ffff'],
-      ['Light Goldenrod','#fafad2'],['Light Gray','#d3d3d3'],['Light Green','#90ee90'],
-      ['Light Pink','#ffb6c1'],['Light Salmon','#ffa07a'],['Light Sea Green','#20b2aa'],
-      ['Light Sky Blue','#87cefa'],['Light Slate Gray','#778899'],['Light Steel Blue','#b0c4de'],
-      ['Light Yellow','#ffffe0'],['Lime','#00ff00'],['Lime Green','#32cd32'],
-      ['Linen','#faf0e6'],['Magenta','#ff00ff'],['Maroon','#800000'],
-      ['Medium Aquamarine','#66cdaa'],['Medium Blue','#0000cd'],['Medium Orchid','#ba55d3'],
-      ['Medium Purple','#9370db'],['Medium Sea Green','#3cb371'],['Medium Slate Blue','#7b68ee'],
-      ['Medium Spring Green','#00fa9a'],['Medium Turquoise','#48d1cc'],['Medium Violet Red','#c71585'],
-      ['Midnight Blue','#191970'],['Mint Cream','#f5fffa'],['Misty Rose','#ffe4e1'],
-      ['Moccasin','#ffe4b5'],['Navajo White','#ffdead'],['Navy','#000080'],
-      ['Old Lace','#fdf5e6'],['Olive','#808000'],['Olive Drab','#6b8e23'],
-      ['Orange','#ffa500'],['Orange Red','#ff4500'],['Orchid','#da70d6'],
-      ['Pale Goldenrod','#eee8aa'],['Pale Green','#98fb98'],['Pale Turquoise','#afeeee'],
-      ['Pale Violet Red','#db7093'],['Papaya Whip','#ffefd5'],['Peach Puff','#ffdab9'],
-      ['Peru','#cd853f'],['Pink','#ffc0cb'],['Plum','#dda0dd'],
-      ['Powder Blue','#b0e0e6'],['Purple','#800080'],['Red','#ff0000'],
-      ['Rosy Brown','#bc8f8f'],['Royal Blue','#4169e1'],['Saddle Brown','#8b4513'],
-      ['Salmon','#fa8072'],['Sandy Brown','#f4a460'],['Sea Green','#2e8b57'],
-      ['Seashell','#fff5ee'],['Sienna','#a0522d'],['Silver','#c0c0c0'],
-      ['Sky Blue','#87ceeb'],['Slate Blue','#6a5acd'],['Slate Gray','#708090'],
-      ['Snow','#fffafa'],['Spring Green','#00ff7f'],['Steel Blue','#4682b4'],
-      ['Tan','#d2b48c'],['Teal','#008080'],['Thistle','#d8bfd8'],
-      ['Tomato','#ff6347'],['Turquoise','#40e0d0'],['Violet','#ee82ee'],
-      ['Wheat','#f5deb3'],['White','#ffffff'],['White Smoke','#f5f5f5'],
-      ['Yellow','#ffff00'],['Yellow Green','#9acd32'],
-    ];
-
-    function findClosestColorName(hex) {
-      hex = hex.replace('#','');
-      var r1=parseInt(hex.slice(0,2),16), g1=parseInt(hex.slice(2,4),16), b1=parseInt(hex.slice(4,6),16);
-      var minD=Infinity, closest=null;
-      COLOR_NAMES.forEach(function(c) {
-        var h=c[1].replace('#','');
-        var d=(r1-parseInt(h.slice(0,2),16))*(r1-parseInt(h.slice(0,2),16))
-             +(g1-parseInt(h.slice(2,4),16))*(g1-parseInt(h.slice(2,4),16))
-             +(b1-parseInt(h.slice(4,6),16))*(b1-parseInt(h.slice(4,6),16));
-        if(d<minD){minD=d;closest=c;}
-      });
-      return closest; // [name, hex]
-    }
-
-    function findColorsByName(query) {
-      var lower = query.toLowerCase().trim();
-      return COLOR_NAMES.filter(function(c) { return c[0].toLowerCase().includes(lower); });
-    }
-
-    function parseHex(val) {
-      var h = val.replace(/^#/,'').trim();
-      if (/^[0-9a-fA-F]{6}$/.test(h)) return '#'+h.toLowerCase();
-      if (/^[0-9a-fA-F]{3}$/.test(h)) return '#'+h.split('').map(function(c){return c+c;}).join('').toLowerCase();
-      return null;
-    }
-
     // ─── Color section ───────────────────────────────────────────────────────
     var colorDropdownOpen = false;
 
-    function buildColorSection() { renderDropdown(''); refreshColorUI(); }
+    function buildColorSection() { renderDropdown(); refreshColorUI(); }
 
-    function renderDropdown(query) {
+    function renderDropdown() {
       var dd = document.getElementById('color-dropdown');
       if (!dd) return;
       dd.innerHTML = '';
-      var inp = document.getElementById('color-input');
-      var hexFromQuery = parseHex(query);
-
-      // None
       dd.appendChild(makeColorBtn(null, t('noneLabel'), null));
       sep(dd);
-
-      if (!query) {
-        // Default: show presets
-        var names = t('colorNames');
-        PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
-      } else if (hexFromQuery) {
-        // Hex input: show closest name match
-        var closest = findClosestColorName(hexFromQuery);
-        if (closest) {
-          var closestBtn = makeColorBtn(hexFromQuery, '≈ '+closest[0], hexFromQuery);
-          closestBtn.style.fontStyle = 'italic';
-          dd.appendChild(closestBtn);
-          sep(dd);
-        }
-        var names = t('colorNames');
-        PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
-      } else {
-        // Name search: translated presets first, then English CSS database
-        var presetNames = t('colorNames');
-        var lowerQ = query.toLowerCase();
-        var shownHexes = {};
-        presetNames.forEach(function(name, i) {
-          if (name.toLowerCase().includes(lowerQ)) {
-            dd.appendChild(makeColorBtn(PRESET_COLORS[i].hex, name, PRESET_COLORS[i].hex));
-            shownHexes[PRESET_COLORS[i].hex] = true;
-          }
-        });
-        var cssMatches = findColorsByName(query).filter(function(c){ return !shownHexes[c[1]]; });
-        cssMatches.slice(0,8).forEach(function(c){ dd.appendChild(makeColorBtn(c[1], c[0], c[1])); });
-        // Fallback: show all presets
-        if (!Object.keys(shownHexes).length && !cssMatches.length) {
-          presetNames.forEach(function(name, i){ dd.appendChild(makeColorBtn(PRESET_COLORS[i].hex, name, PRESET_COLORS[i].hex)); });
-        }
-      }
-
+      PRESET_COLORS.forEach(function(c) {
+        dd.appendChild(makeColorBtn(c.hex, c.name + ' (' + c.hex + ')', c.hex));
+      });
       sep(dd);
       dd.appendChild(makeColorBtn('__custom__', t('colorCustom'), null, true));
     }
@@ -1173,41 +1061,19 @@
     function resolveInputValue() {
       var inp = document.getElementById('color-input');
       if (!inp) return;
-      if (!selColor) { inp.value=''; return; }
-      var pi = -1;
-      for(var i=0;i<PRESET_COLORS.length;i++){ if(PRESET_COLORS[i].hex===selColor){pi=i;break;} }
-      if (pi>-1) { inp.value = t('colorNames')[pi]; return; }
-      var closest = findClosestColorName(selColor);
-      inp.value = closest ? closest[0] : selColor;
+      if (!selColor) { inp.value = ''; return; }
+      var preset = PRESET_COLORS.find(function(c){ return c.hex === selColor; });
+      inp.value = preset ? preset.name + ' (' + preset.hex + ')' : selColor;
     }
 
     function handleColorInput(val) {
-      var trimmed = val.trim();
-      if (!trimmed) { selColor=null; updateColorDot(null); renderDropdown(''); return; }
-      var hex = parseHex(trimmed);
-      if (hex) {
-        selColor = hex; updateColorDot(hex); renderDropdown(trimmed);
+      var h = val.replace(/[^0-9a-fA-F]/g, '');
+      if (h.length === 6) {
+        selColor = '#' + h.toLowerCase();
+        updateColorDot(selColor);
       } else {
-        // Try translated preset names first, then English CSS names
-        var presetNames = t('colorNames');
-        var lowerQ = trimmed.toLowerCase();
-        var presetIdx = -1;
-        for (var i = 0; i < presetNames.length; i++) {
-          if (presetNames[i].toLowerCase() === lowerQ) { presetIdx = i; break; }
-        }
-        if (presetIdx === -1) {
-          for (var i = 0; i < presetNames.length; i++) {
-            if (presetNames[i].toLowerCase().startsWith(lowerQ)) { presetIdx = i; break; }
-          }
-        }
-        if (presetIdx > -1) {
-          selColor = PRESET_COLORS[presetIdx].hex; updateColorDot(selColor);
-        } else {
-          var cssMatches = findColorsByName(trimmed);
-          selColor = cssMatches.length > 0 ? cssMatches[0][1] : null;
-          updateColorDot(selColor);
-        }
-        renderDropdown(trimmed);
+        selColor = null;
+        updateColorDot(null);
       }
     }
 
@@ -1215,13 +1081,22 @@
       var inp  = document.getElementById('color-input');
       var wrap = document.getElementById('color-trigger-wrap');
 
-      // Prevent document click from closing when interacting inside
       wrap.addEventListener('click', function(e){ e.stopPropagation(); });
-      document.getElementById('color-dropdown').addEventListener('mousedown', function(e){ e.preventDefault(); }); // keep input focus
+      document.getElementById('color-dropdown').addEventListener('mousedown', function(e){ e.preventDefault(); });
       document.getElementById('color-dropdown').addEventListener('click', function(e){ e.stopPropagation(); });
 
-      inp.addEventListener('focus', function(){ renderDropdown(this.value); openColorDropdown(); });
-      inp.addEventListener('input', function(){ handleColorInput(this.value); });
+      inp.addEventListener('focus', function() {
+        // Strip to bare hex for editing
+        if (selColor) this.value = selColor.replace('#', '');
+        renderDropdown();
+        openColorDropdown();
+      });
+      inp.addEventListener('input', function() {
+        // Filter to hex chars only
+        var cleaned = this.value.replace(/[^0-9a-fA-F]/g, '');
+        if (cleaned !== this.value) this.value = cleaned;
+        handleColorInput(cleaned);
+      });
       inp.addEventListener('keydown', function(e){
         if(e.key==='Escape'||e.key==='Enter'){ closeColorDropdown(); inp.blur(); }
       });
