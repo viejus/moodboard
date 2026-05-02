@@ -494,6 +494,33 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Info tooltip */
+    .info-wrap {
+      display: inline-flex; align-items: center;
+      position: relative; margin-left: 5px;
+      vertical-align: middle;
+    }
+    .info-btn {
+      background: none; border: none; padding: 0; cursor: help;
+      color: var(--text-tertiary); display: flex; align-items: center;
+      transition: color .15s;
+    }
+    .info-btn:hover, .info-btn:focus-visible { color: var(--text-secondary); }
+    .info-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+    .info-tooltip {
+      position: absolute; bottom: calc(100% + 8px); left: 0;
+      background: #1e1e1e; border: .5px solid #2e2e2e;
+      border-radius: var(--radius-md); padding: 10px 12px;
+      font-size: 11px; line-height: 1.6; color: var(--text-secondary);
+      white-space: normal; min-width: 220px; max-width: 260px;
+      pointer-events: none; opacity: 0;
+      transition: opacity .15s; z-index: 200;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+      text-transform: none; letter-spacing: 0; font-weight: 400;
+    }
+    .info-wrap:hover .info-tooltip,
+    .info-btn:focus .info-tooltip { opacity: 1; }
+
     /* Field error states */
     .field-error { border-color: var(--danger) !important; }
     .group-error { box-shadow: 0 0 0 1px var(--danger); border-radius: var(--radius-sm); }
@@ -570,7 +597,7 @@
         <div class="field-group">
           <fieldset>
             <legend class="field-legend" data-i18n="logoFormat">Logo format — select at least one</legend>
-            <div class="format-sub-label" aria-hidden="true" data-i18n="logotype">Logotype</div>
+            <div class="format-sub-label" aria-hidden="true"><span data-i18n="logotype">Logotype</span><span class="info-wrap"><button type="button" class="info-btn" id="logotype-info-btn" aria-label="About logotype formats"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></button><span class="info-tooltip" id="logotype-info-tooltip" role="tooltip"></span></span></div>
             <div class="format-cards" id="logotype-row" role="group"></div>
             <p class="field-hint" id="hint-logotype" role="alert"></p>
             <div class="format-sub-label" style="margin-top:.9rem;" aria-hidden="true"><span data-i18n="typeStyle">Logotype style</span> <span class="optional" data-i18n="optional">— optional</span></div>
@@ -701,6 +728,7 @@
         feels: ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'],
         typeStyles: ['Serif','Sans-serif','Slab Serif','Script','Display','Geometric','Gothic','Condensed'],
         logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
+        logotypeInfo: 'Wordmark — full brand name set in a custom typeface (e.g. Google, FedEx).\nLettermark — initials or abbreviation only (e.g. IBM, HBO).',
         isotypeNames: { symbol: 'Symbol', emblem: 'Emblem', abstract: 'Abstract' },
       },
       es: {
@@ -753,6 +781,7 @@
         feels: ['Audaz','Minimalista','Juguetón','Serio','Cálido','Cool','Lujoso','Accesible','Irreverente','Confiable','Orgánico','Técnico'],
         typeStyles: ['Serif','Sin serifa','Slab Serif','Script','Display','Geométrica','Gótica','Condensada'],
         logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
+        logotypeInfo: 'Wordmark — nombre completo en tipografía personalizada (ej. Google, FedEx).\nLettermark — solo iniciales o abreviatura (ej. IBM, HBO).',
         isotypeNames: { symbol: 'Símbolo', emblem: 'Emblema', abstract: 'Abstracto' },
       }
     };
@@ -780,6 +809,9 @@
       rebuildTypePills();
       rebuildFormatCards();
       buildColorSection();
+      // Tooltip text
+      var tip = document.getElementById('logotype-info-tooltip');
+      if (tip) tip.textContent = t('logotypeInfo');
       // Upload hint
       renderPreviews();
     }
