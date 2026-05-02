@@ -5,23 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logo Moodboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Roboto+Slab:wght@400&family=Dancing+Script:wght@500&family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400&family=UnifrakturMaguntia&family=Barlow+Condensed:wght@400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --text-primary: #f0f0ee;
-      --text-secondary: #999999;
-      --text-tertiary: #555555;
+      --text-secondary: #b0b0b0;
+      --text-tertiary: #888888;
       --bg-primary: #111111;
       --bg-secondary: #1a1a1a;
       --border-primary: #f0f0ee;
       --border-secondary: #2e2e2e;
       --border-tertiary: #222222;
-      --danger: #ff4422;
+      --danger: #ff6644;
+      --focus: #f0f0ee;
       --radius-sm: 4px;
       --radius-md: 8px;
-      --radius-lg: 12px;
+      --gap: 1.8rem;
     }
 
     body {
@@ -31,10 +32,39 @@
       min-height: 100vh;
     }
 
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      padding: .5rem 1rem;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
     .container {
       max-width: 640px;
       margin: 0 auto;
       padding: 3rem 1.5rem 5rem;
+    }
+
+    /* Header row */
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
     }
 
     .wordmark {
@@ -42,8 +72,23 @@
       letter-spacing: .15em;
       text-transform: uppercase;
       color: var(--text-tertiary);
-      margin-bottom: 2rem;
     }
+
+    .lang-toggle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      background: transparent;
+      border: .5px solid var(--border-secondary);
+      border-radius: 20px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .lang-toggle:hover { border-color: var(--text-tertiary); color: var(--text-secondary); }
 
     h1 {
       font-size: 32px;
@@ -65,14 +110,18 @@
       margin-bottom: 2.5rem;
     }
 
-    .step-label {
+    /* Form sections — uniform spacing */
+    .field-group { margin-top: var(--gap); }
+
+    label.field-label,
+    .field-legend {
+      display: block;
       font-size: 10px;
       font-weight: 500;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--text-tertiary);
       margin-bottom: .6rem;
-      margin-top: 1.8rem;
     }
 
     .optional {
@@ -83,7 +132,9 @@
       color: var(--text-tertiary);
     }
 
+    /* Inputs */
     .text-input {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       padding: 9px 12px;
       border: .5px solid var(--border-secondary);
@@ -94,14 +145,41 @@
       width: 100%;
       transition: border-color .15s;
     }
-
     .text-input:focus { border-color: var(--border-primary); }
+    .text-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
     .text-input::placeholder { color: var(--text-tertiary); }
+
+    .textarea-input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 9px 12px;
+      border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      width: 100%;
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.6;
+      transition: border-color .15s;
+    }
+    .textarea-input:focus { border-color: var(--border-primary); }
+    .textarea-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .textarea-input::placeholder { color: var(--text-tertiary); }
+
+    /* Fieldsets */
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
 
     /* Personality pills */
     .pill-row { display: flex; flex-wrap: wrap; gap: 7px; }
 
     .feel-pill {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       padding: 6px 13px;
       border-radius: 20px;
@@ -112,38 +190,59 @@
       transition: all .15s;
       user-select: none;
     }
-
-    .feel-pill:hover:not(.locked) {
+    .feel-pill:hover:not([aria-disabled="true"]) {
       border-color: var(--border-secondary);
       background: var(--bg-secondary);
     }
-
-    .feel-pill.active {
+    .feel-pill[aria-pressed="true"] {
       background: var(--text-primary);
       color: var(--bg-primary);
       border-color: var(--text-primary);
     }
-
-    .feel-pill.locked {
+    .feel-pill[aria-disabled="true"] {
       opacity: .25;
       cursor: not-allowed;
       pointer-events: none;
     }
 
+    /* Type style pills */
+    .type-pill {
+      font-size: 14px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: .5px solid var(--border-tertiary);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+      line-height: 1.6;
+    }
+    .type-pill:hover {
+      border-color: var(--border-secondary);
+      background: var(--bg-secondary);
+    }
+    .type-pill[aria-pressed="true"] {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-color: var(--text-primary);
+    }
+
     /* Format cards */
-    .format-group-label {
+    .format-sub-label {
       font-size: 10px;
       font-weight: 500;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--text-tertiary);
       margin-bottom: .6rem;
-      margin-top: 1.2rem;
+      margin-top: 1rem;
     }
 
     .format-cards { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
     .fmt-card {
+      font-family: 'JetBrains Mono', monospace;
       border: .5px solid var(--border-tertiary);
       border-radius: var(--radius-md);
       padding: 10px 10px 7px;
@@ -153,10 +252,8 @@
       text-align: center;
       width: 88px;
     }
-
     .fmt-card:hover { border-color: var(--border-secondary); }
-    .fmt-card.active { border: 1.5px solid var(--text-primary); }
-
+    .fmt-card[aria-pressed="true"] { border: 1.5px solid var(--text-primary); }
     .fmt-card svg { display: block; margin: 0 auto 5px; }
 
     .fmt-card-name {
@@ -165,10 +262,10 @@
       color: var(--text-tertiary);
       letter-spacing: .03em;
     }
-
-    .fmt-card.active .fmt-card-name { color: var(--text-primary); }
+    .fmt-card[aria-pressed="true"] .fmt-card-name { color: var(--text-primary); }
 
     .fmt-none {
+      font-family: 'JetBrains Mono', monospace;
       border: .5px solid var(--border-tertiary);
       border-radius: var(--radius-md);
       padding: 10px 10px 7px;
@@ -183,9 +280,8 @@
       align-items: center;
       gap: 5px;
     }
-
     .fmt-none:hover { border-color: var(--border-secondary); }
-    .fmt-none.active { border: 1.5px solid var(--text-primary); }
+    .fmt-none[aria-pressed="true"] { border: 1.5px solid var(--text-primary); }
 
     .fmt-none-label {
       font-size: 10px;
@@ -193,11 +289,64 @@
       color: var(--text-tertiary);
       letter-spacing: .03em;
     }
+    .fmt-none[aria-pressed="true"] .fmt-none-label { color: var(--text-primary); }
 
-    .fmt-none.active .fmt-none-label { color: var(--text-primary); }
+    /* Image upload */
+    .upload-area {
+      border: .5px dashed var(--border-secondary);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+    }
+    .upload-area:hover { border-color: var(--text-tertiary); background: var(--bg-secondary); }
+    .upload-area:focus-within { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--radius-md); }
+    .upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-hint { font-size: 12px; color: var(--text-tertiary); pointer-events: none; }
+    .upload-hint span { display: block; font-size: 10px; margin-top: 4px; opacity: .6; }
+
+    .image-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+    .img-thumb {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: .5px solid var(--border-secondary);
+    }
+    .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-thumb-remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 16px;
+      height: 16px;
+      background: rgba(0,0,0,.75);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1;
+    }
 
     /* CTA */
     .cta-btn {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       font-weight: 500;
       padding: 11px 24px;
@@ -212,7 +361,6 @@
       align-items: center;
       gap: 8px;
     }
-
     .cta-btn:hover { opacity: .82; }
     .cta-btn:disabled { opacity: .35; cursor: not-allowed; }
 
@@ -225,7 +373,6 @@
       border-radius: 50%;
       animation: spin .6s linear infinite;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Error */
@@ -248,229 +395,496 @@
       border-radius: var(--radius-md);
       text-align: center;
     }
-
-    .success-icon {
-      font-size: 20px;
-      color: var(--text-secondary);
-      margin-bottom: .75rem;
-    }
-
-    .success-title {
-      font-size: 16px;
-      font-weight: 400;
-      margin-bottom: .4rem;
-    }
-
-    .success-sub {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    .chip {
-      font-size: 13px;
-      padding: 8px 12px 8px 14px;
-      border-radius: 20px;
-      border: .5px solid var(--border-secondary);
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      cursor: pointer;
-      transition: all .2s;
-      user-select: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-
-    .chip:hover {
-      background: #e60023;
-      color: #fff;
-      border-color: #e60023;
-    }
-
-    .chip-pinterest {
-      display: flex;
-      align-items: center;
-      opacity: 0;
-      transition: opacity .15s;
-      flex-shrink: 0;
-    }
-
-    .chip:hover .chip-pinterest { opacity: 1; }
-
-    .chip-copy {
-      display: flex;
-      align-items: center;
-      padding: 2px 4px;
-      border-radius: 4px;
-      opacity: 0;
-      transition: opacity .15s, background .15s;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .chip:hover .chip-copy { opacity: .6; }
-    .chip-copy:hover { opacity: 1 !important; background: rgba(255,255,255,.2); }
-    .chip-copy.copied { opacity: 1 !important; }
-
-    .chip-copy svg, .chip-pinterest svg { display: block; }
+    .success-icon { font-size: 20px; color: var(--text-secondary); margin-bottom: .75rem; }
+    .success-title { font-size: 16px; font-weight: 400; margin-bottom: .4rem; }
+    .success-sub { font-size: 12px; color: var(--text-secondary); }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-form" data-i18n="skipLink">Skip to form</a>
+
   <div class="container">
-    <div class="wordmark">Logo &amp; brand moodboard</div>
-    <h1>Find your<br><em>visual direction</em></h1>
-    <p class="sub">Tell us about your brand. We'll send you Pinterest search queries to build your visual direction.</p>
-
-    <div class="step-label">Brand name</div>
-    <input class="text-input" id="brand-name" type="text" placeholder="e.g. Volta">
-
-    <div class="step-label" style="margin-top:1rem">What you do</div>
-    <input class="text-input" id="brand-desc" type="text" placeholder="e.g. electric bike subscription for cities">
-
-    <div class="step-label">Personality — pick up to 2</div>
-    <div class="pill-row" id="feel-row"></div>
-
-    <div class="step-label">Logo format — select at least one</div>
-    <div class="format-group-label">Logotype</div>
-    <div class="format-cards" id="logotype-row"></div>
-    <div class="format-group-label">Isotype</div>
-    <div class="format-cards" id="isotype-row"></div>
-
-    <div class="step-label">What to avoid <span class="optional">— optional</span></div>
-    <input class="text-input" id="avoid" type="text" placeholder="e.g. gradients, fintech clichés">
-
-    <div class="step-label">Any brand reference <span class="optional">— optional</span></div>
-    <input class="text-input" id="brand-ref" type="text" placeholder="e.g. Apple, Stripe, early Nike">
-
-    <button class="cta-btn" id="cta-btn">Send form →</button>
-    <div class="err" id="err"></div>
-
-    <div class="success" id="success">
-      <div class="success-icon">✓</div>
-      <div class="success-title">Brief sent.</div>
-      <div class="success-sub">We'll get back to you with your visual direction.</div>
+    <div class="header-row">
+      <div class="wordmark" aria-hidden="true" data-i18n="wordmark">Logo &amp; brand moodboard</div>
+      <button class="lang-toggle" id="lang-btn" aria-label="Switch to Spanish">ES</button>
     </div>
+
+    <h1><span data-i18n="h1">Find your</span><br><em data-i18n="h1em">visual direction</em></h1>
+    <p class="sub" data-i18n="sub">Tell us about your brand. We'll send you Pinterest search queries to build your visual direction.</p>
+
+    <main id="main-form">
+      <form id="brief-form" novalidate>
+
+        <div class="field-group">
+          <label class="field-label" for="brand-name" data-i18n="brandName">Brand name</label>
+          <input class="text-input" id="brand-name" type="text" autocomplete="organization" data-i18n-placeholder="brandNamePh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="brand-desc" data-i18n="whatYouDo">What you do</label>
+          <input class="text-input" id="brand-desc" type="text" data-i18n-placeholder="whatYouDoPh">
+        </div>
+
+        <div class="field-group">
+          <fieldset>
+            <legend class="field-legend" data-i18n="personality">Personality — pick up to 2</legend>
+            <div class="pill-row" id="feel-row" role="group"></div>
+          </fieldset>
+        </div>
+
+        <div class="field-group">
+          <fieldset>
+            <legend class="field-legend" data-i18n="logoFormat">Logo format — select at least one</legend>
+            <div class="format-sub-label" aria-hidden="true" data-i18n="logotype">Logotype</div>
+            <div class="format-cards" id="logotype-row" role="group"></div>
+            <div class="format-sub-label" style="margin-top:.9rem;" aria-hidden="true"><span data-i18n="typeStyle">Logotype style</span> <span class="optional" data-i18n="optional">— optional</span></div>
+            <div class="pill-row" id="type-row" role="group"></div>
+            <div class="format-sub-label" aria-hidden="true" data-i18n="isotype">Isotype</div>
+            <div class="format-cards" id="isotype-row" role="group"></div>
+          </fieldset>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="avoid"><span data-i18n="avoid">What to avoid</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <input class="text-input" id="avoid" type="text" data-i18n-placeholder="avoidPh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="brand-ref"><span data-i18n="brandRef">Any brand reference</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <input class="text-input" id="brand-ref" type="text" data-i18n-placeholder="brandRefPh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="notes"><span data-i18n="notes">Anything else we should know</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <textarea class="textarea-input" id="notes" rows="3" data-i18n-placeholder="notesPh"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="img-upload"><span data-i18n="images">Visual references</span> <span class="optional" data-i18n="imagesOptional">— optional, up to 5 images</span></label>
+          <div class="upload-area" id="upload-area">
+            <input type="file" id="img-upload" name="images" accept="image/*" multiple>
+            <div class="upload-hint" id="upload-hint"><span data-i18n="uploadBtn">Click to upload images</span><span data-i18n="uploadSub">PNG, JPG, WEBP · max 5MB each</span></div>
+          </div>
+          <div class="image-previews" id="image-previews" aria-live="polite"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="client-email" data-i18n="email">Your email</label>
+          <input class="text-input" id="client-email" type="email" autocomplete="email" required data-i18n-placeholder="emailPh">
+        </div>
+
+        <button class="cta-btn" id="cta-btn" type="submit" data-i18n="submit">Send form →</button>
+
+      </form>
+
+      <div class="err" id="err" role="alert" aria-live="assertive"></div>
+
+      <div class="success" id="success" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <div class="success-title" data-i18n="successTitle">Brief sent.</div>
+        <div class="success-sub" data-i18n="successSub">We'll get back to you with your visual direction.</div>
+      </div>
+    </main>
   </div>
 
   <script>
+    // ─── i18n ────────────────────────────────────────────────────────────────
+    var currentLang = 'en';
+
+    var STRINGS = {
+      en: {
+        skipLink: 'Skip to form',
+        wordmark: 'Logo & brand moodboard',
+        h1: 'Find your',
+        h1em: 'visual direction',
+        sub: "Tell us about your brand. We'll send you Pinterest search queries to build your visual direction.",
+        brandName: 'Brand name',
+        whatYouDo: 'What you do',
+        personality: 'Personality — pick up to 2',
+        logoFormat: 'Logo format — select at least one',
+        logotype: 'Logotype',
+        isotype: 'Isotype',
+        typeStyle: 'Logotype style',
+        avoid: 'What to avoid',
+        brandRef: 'Any brand reference',
+        notes: 'Anything else we should know',
+        images: 'Visual references',
+        imagesOptional: '— optional, up to 5 images',
+        email: 'Your email',
+        submit: 'Send form →',
+        optional: '— optional',
+        uploadBtn: 'Click to upload images',
+        uploadSub: 'PNG, JPG, WEBP · max 5MB each',
+        uploadMax: 'Max 5 images reached',
+        successTitle: 'Brief sent.',
+        successSub: "We'll get back to you with your visual direction.",
+        langToggle: 'ES',
+        langToggleLabel: 'Switch to Spanish',
+        noneLabel: 'None',
+        errName: 'Add your brand name.',
+        errDesc: 'Add what you do.',
+        errPersonality: 'Pick at least one personality trait.',
+        errFormat: 'Select at least one logo format.',
+        errLogotype: 'Select at least one logotype.',
+        errEmail: 'Add your email address.',
+        errEmailInvalid: 'Enter a valid email address.',
+        sending: 'Sending…',
+        brandNamePh: 'e.g. Volta',
+        whatYouDoPh: 'e.g. electric bike subscription for cities',
+        avoidPh: 'e.g. gradients, fintech clichés',
+        brandRefPh: 'e.g. Apple, Stripe, early Nike',
+        notesPh: "Colors you love, designers you admire, a vibe you can't quite name…",
+        emailPh: 'you@example.com',
+        feels: ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'],
+        typeStyles: ['Serif','Sans-serif','Slab Serif','Script','Display','Geometric','Gothic','Condensed'],
+        logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
+        isotypeNames: { symbol: 'Symbol', emblem: 'Emblem', abstract: 'Abstract' },
+      },
+      es: {
+        skipLink: 'Ir al formulario',
+        wordmark: 'Moodboard de logo y marca',
+        h1: 'Encuentra tu',
+        h1em: 'dirección visual',
+        sub: 'Cuéntanos sobre tu marca. Te enviaremos búsquedas de Pinterest para construir tu dirección visual.',
+        brandName: 'Nombre de la marca',
+        whatYouDo: 'A qué te dedicas',
+        personality: 'Personalidad — elige hasta 2',
+        logoFormat: 'Formato de logo — selecciona al menos uno',
+        logotype: 'Logotipo',
+        isotype: 'Isotipo',
+        typeStyle: 'Estilo tipográfico',
+        avoid: 'Qué evitar',
+        brandRef: 'Referencia de marca',
+        notes: '¿Algo más que debamos saber?',
+        images: 'Referencias visuales',
+        imagesOptional: '— opcional, hasta 5 imágenes',
+        email: 'Tu correo electrónico',
+        submit: 'Enviar →',
+        optional: '— opcional',
+        uploadBtn: 'Clic para subir imágenes',
+        uploadSub: 'PNG, JPG, WEBP · máx. 5MB cada uno',
+        uploadMax: 'Máximo 5 imágenes alcanzado',
+        successTitle: 'Brief enviado.',
+        successSub: 'Nos pondremos en contacto contigo con tu dirección visual.',
+        langToggle: 'EN',
+        langToggleLabel: 'Switch to English',
+        noneLabel: 'Ninguno',
+        errName: 'Agrega el nombre de tu marca.',
+        errDesc: 'Agrega a qué te dedicas.',
+        errPersonality: 'Elige al menos una personalidad.',
+        errFormat: 'Selecciona al menos un formato de logo.',
+        errLogotype: 'Selecciona al menos un logotipo.',
+        errEmail: 'Agrega tu dirección de correo.',
+        errEmailInvalid: 'Ingresa una dirección de correo válida.',
+        sending: 'Enviando…',
+        brandNamePh: 'ej. Volta',
+        whatYouDoPh: 'ej. suscripción de bicicletas eléctricas para ciudades',
+        avoidPh: 'ej. degradados, clichés de fintech',
+        brandRefPh: 'ej. Apple, Stripe, Nike temprano',
+        notesPh: 'Colores que te gustan, diseñadores que admiras, un estilo que no puedes nombrar…',
+        emailPh: 'tú@ejemplo.com',
+        feels: ['Audaz','Minimalista','Juguetón','Serio','Cálido','Cool','Lujoso','Accesible','Irreverente','Confiable','Orgánico','Técnico'],
+        typeStyles: ['Serif','Sin serifa','Slab Serif','Script','Display','Geométrica','Gótica','Condensada'],
+        logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
+        isotypeNames: { symbol: 'Símbolo', emblem: 'Emblema', abstract: 'Abstracto' },
+      }
+    };
+
+    function t(key) { return STRINGS[currentLang][key] || STRINGS.en[key] || key; }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+      // Text nodes
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (key === 'wordmark') { el.innerHTML = t('wordmark'); return; }
+        el.textContent = t(key);
+      });
+      // Placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      });
+      // Lang button
+      var btn = document.getElementById('lang-btn');
+      btn.textContent = t('langToggle');
+      btn.setAttribute('aria-label', t('langToggleLabel'));
+      // Rebuild dynamic sections
+      rebuildFeelPills();
+      rebuildTypePills();
+      rebuildFormatCards();
+      // Upload hint
+      renderPreviews();
+    }
+
+    document.getElementById('lang-btn').addEventListener('click', function() {
+      currentLang = currentLang === 'en' ? 'es' : 'en';
+      applyLanguage();
+    });
+
+    // ─── State ───────────────────────────────────────────────────────────────
     var selFeels = [];
     var selLogotypes = [];
     var selIsotypes = [];
     var isNoneIsotype = false;
-
-    var FEELS = ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'];
+    var selTypeStyles = [];
 
     var LOGOTYPES = [
-      { id: 'wordmark', name: 'Wordmark', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="26" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
-      { id: 'lettermark', name: 'Lettermark', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="27" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#f0f0ee" text-anchor="middle" letter-spacing="1">AB</text></svg>' },
+      { id: 'wordmark',   svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="26" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
+      { id: 'lettermark', svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="27" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#f0f0ee" text-anchor="middle" letter-spacing="1">AB</text></svg>' },
     ];
 
     var ISOTYPES = [
-      { id: 'symbol', name: 'Symbol', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><rect x="10" y="12" width="16" height="16" rx="2" fill="#f0f0ee"/><text x="42" y="26" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
-      { id: 'emblem', name: 'Emblem', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="30" cy="20" r="14" fill="none" stroke="#f0f0ee" stroke-width="1.2"/><text x="30" y="25" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#f0f0ee" text-anchor="middle">AB</text></svg>' },
-      { id: 'abstract', name: 'Abstract', svg: '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="25" cy="20" r="10" fill="#f0f0ee"/><circle cx="35" cy="20" r="10" fill="#1a1a1a"/><circle cx="35" cy="20" r="10" fill="none" stroke="#f0f0ee" stroke-width="1.2"/></svg>' },
+      { id: 'symbol',   svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><rect x="10" y="12" width="16" height="16" rx="2" fill="#f0f0ee"/><text x="42" y="26" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
+      { id: 'emblem',   svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="30" cy="20" r="14" fill="none" stroke="#f0f0ee" stroke-width="1.2"/><text x="30" y="25" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#f0f0ee" text-anchor="middle">AB</text></svg>' },
+      { id: 'abstract', svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="25" cy="20" r="10" fill="#f0f0ee"/><circle cx="35" cy="20" r="10" fill="#1a1a1a"/><circle cx="35" cy="20" r="10" fill="none" stroke="#f0f0ee" stroke-width="1.2"/></svg>' },
     ];
 
-    var feelRow = document.getElementById('feel-row');
-    FEELS.forEach(function(f) {
-      var btn = document.createElement('button');
-      btn.className = 'feel-pill';
-      btn.textContent = f;
-      btn.addEventListener('click', function() {
-        var idx = selFeels.indexOf(f);
-        if (idx > -1) { selFeels.splice(idx, 1); btn.classList.remove('active'); }
-        else if (selFeels.length < 2) { selFeels.push(f); btn.classList.add('active'); }
-        feelRow.querySelectorAll('.feel-pill').forEach(function(b) {
-          if (!b.classList.contains('active')) {
-            if (selFeels.length >= 2) b.classList.add('locked');
-            else b.classList.remove('locked');
+    // ─── Feel pills ───────────────────────────────────────────────────────────
+    function rebuildFeelPills() {
+      var row = document.getElementById('feel-row');
+      var prevActive = selFeels.slice(); // preserve selection by index
+      row.innerHTML = '';
+      selFeels = [];
+      var labels = t('feels');
+      labels.forEach(function(label, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'feel-pill';
+        btn.textContent = label;
+        btn.dataset.idx = i;
+        var wasActive = prevActive[0] === labels[i] || prevActive[1] === labels[i];
+        btn.setAttribute('aria-pressed', wasActive ? 'true' : 'false');
+        if (wasActive) selFeels.push(label);
+        btn.addEventListener('click', function() {
+          var idx = selFeels.indexOf(label);
+          if (idx > -1) {
+            selFeels.splice(idx, 1);
+            btn.setAttribute('aria-pressed', 'false');
+          } else if (selFeels.length < 2) {
+            selFeels.push(label);
+            btn.setAttribute('aria-pressed', 'true');
           }
+          row.querySelectorAll('.feel-pill').forEach(function(b) {
+            if (b.getAttribute('aria-pressed') !== 'true') {
+              b.setAttribute('aria-disabled', selFeels.length >= 2 ? 'true' : 'false');
+            }
+          });
         });
-      });
-      feelRow.appendChild(btn);
-    });
-
-    function buildCards(containerId, items, selArr) {
-      var row = document.getElementById(containerId);
-      items.forEach(function(item) {
-        var card = document.createElement('div');
-        card.className = 'fmt-card';
-        card.innerHTML = item.svg + '<div class="fmt-card-name">' + item.name + '</div>';
-        card.addEventListener('click', function() {
-          if (containerId === 'isotype-row' && isNoneIsotype) {
-            isNoneIsotype = false;
-            document.getElementById('none-isotype').classList.remove('active');
-          }
-          var idx = selArr.indexOf(item.id);
-          if (idx > -1) { selArr.splice(idx, 1); card.classList.remove('active'); }
-          else { selArr.push(item.id); card.classList.add('active'); }
-        });
-        row.appendChild(card);
+        row.appendChild(btn);
       });
     }
 
-    buildCards('logotype-row', LOGOTYPES, selLogotypes);
-    buildCards('isotype-row', ISOTYPES, selIsotypes);
+    // ─── Type style pills ────────────────────────────────────────────────────
+    var TYPE_FONTS = [
+      { family: 'Georgia, serif',                    style: 'normal', weight: '400' },
+      { family: 'Arial, Helvetica, sans-serif',      style: 'normal', weight: '400' },
+      { family: '"Roboto Slab", serif',              style: 'normal', weight: '400' },
+      { family: '"Dancing Script", cursive',         style: 'normal', weight: '500' },
+      { family: '"Playfair Display", serif',         style: 'italic', weight: '400' },
+      { family: '"Nunito", sans-serif',              style: 'normal', weight: '400' },
+      { family: '"UnifrakturMaguntia", cursive',     style: 'normal', weight: '400' },
+      { family: '"Barlow Condensed", sans-serif',    style: 'normal', weight: '400' },
+    ];
 
-    var noneBtn = document.createElement('button');
-    noneBtn.className = 'fmt-none';
-    noneBtn.id = 'none-isotype';
-    noneBtn.innerHTML = '<svg width="60" height="40" viewBox="0 0 60 40"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><line x1="18" y1="20" x2="42" y2="20" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg><div class="fmt-none-label">None</div>';
-    noneBtn.addEventListener('click', function() {
-      selIsotypes.length = 0;
-      document.querySelectorAll('#isotype-row .fmt-card').forEach(function(c) { c.classList.remove('active'); });
-      isNoneIsotype = !isNoneIsotype;
-      noneBtn.classList.toggle('active', isNoneIsotype);
+    function rebuildTypePills() {
+      var row = document.getElementById('type-row');
+      row.innerHTML = '';
+      selTypeStyles = [];
+      var labels = t('typeStyles');
+      var EN_TYPES = STRINGS.en.typeStyles;
+      labels.forEach(function(label, i) {
+        var font = TYPE_FONTS[i] || {};
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'type-pill';
+        btn.textContent = label;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.style.fontFamily  = font.family  || 'inherit';
+        btn.style.fontStyle   = font.style   || 'normal';
+        btn.style.fontWeight  = font.weight  || '400';
+        btn.addEventListener('click', function() {
+          var key = EN_TYPES[i];
+          var idx = selTypeStyles.indexOf(key);
+          if (idx > -1) {
+            selTypeStyles.splice(idx, 1);
+            btn.setAttribute('aria-pressed', 'false');
+          } else {
+            selTypeStyles.push(key);
+            btn.setAttribute('aria-pressed', 'true');
+          }
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    // ─── Format cards ────────────────────────────────────────────────────────
+    function rebuildFormatCards() {
+      var logotypeRow = document.getElementById('logotype-row');
+      var isotypeRow = document.getElementById('isotype-row');
+      var prevLogotypes = selLogotypes.slice();
+      var prevIsotypes = selIsotypes.slice();
+      var prevNone = isNoneIsotype;
+
+      logotypeRow.innerHTML = '';
+      isotypeRow.innerHTML = '';
+      selLogotypes = [];
+      selIsotypes = [];
+      isNoneIsotype = false;
+
+      var lNames = t('logotypeNames');
+      var iNames = t('isotypeNames');
+
+      LOGOTYPES.forEach(function(item) {
+        var card = makeCard(item.svg, lNames[item.id], item.id, selLogotypes, null);
+        if (prevLogotypes.indexOf(item.id) > -1) {
+          card.setAttribute('aria-pressed', 'true');
+          selLogotypes.push(item.id);
+        }
+        logotypeRow.appendChild(card);
+      });
+
+      ISOTYPES.forEach(function(item) {
+        var card = makeCard(item.svg, iNames[item.id], item.id, selIsotypes, function() {
+          if (isNoneIsotype) {
+            isNoneIsotype = false;
+            document.getElementById('none-isotype').setAttribute('aria-pressed', 'false');
+          }
+        });
+        if (prevIsotypes.indexOf(item.id) > -1) {
+          card.setAttribute('aria-pressed', 'true');
+          selIsotypes.push(item.id);
+        }
+        isotypeRow.appendChild(card);
+      });
+
+      var noneBtn = document.createElement('button');
+      noneBtn.type = 'button';
+      noneBtn.className = 'fmt-none';
+      noneBtn.id = 'none-isotype';
+      noneBtn.setAttribute('aria-pressed', prevNone ? 'true' : 'false');
+      if (prevNone) isNoneIsotype = true;
+      noneBtn.innerHTML = '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><line x1="18" y1="20" x2="42" y2="20" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg><div class="fmt-none-label">' + t('noneLabel') + '</div>';
+      noneBtn.addEventListener('click', function() {
+        selIsotypes.length = 0;
+        isotypeRow.querySelectorAll('.fmt-card').forEach(function(c) { c.setAttribute('aria-pressed', 'false'); });
+        isNoneIsotype = !isNoneIsotype;
+        noneBtn.setAttribute('aria-pressed', isNoneIsotype ? 'true' : 'false');
+      });
+      isotypeRow.appendChild(noneBtn);
+    }
+
+    function makeCard(svg, name, id, selArr, onBeforeToggle) {
+      var card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'fmt-card';
+      card.setAttribute('aria-pressed', 'false');
+      card.innerHTML = svg + '<div class="fmt-card-name">' + name + '</div>';
+      card.addEventListener('click', function() {
+        if (onBeforeToggle) onBeforeToggle();
+        var idx = selArr.indexOf(id);
+        if (idx > -1) { selArr.splice(idx, 1); card.setAttribute('aria-pressed', 'false'); }
+        else { selArr.push(id); card.setAttribute('aria-pressed', 'true'); }
+      });
+      return card;
+    }
+
+    // ─── Image upload ────────────────────────────────────────────────────────
+    var selectedFiles = [];
+
+    document.getElementById('img-upload').addEventListener('change', function(e) {
+      Array.from(e.target.files).forEach(function(file) {
+        if (selectedFiles.length < 5) selectedFiles.push(file);
+      });
+      e.target.value = '';
+      renderPreviews();
     });
-    document.getElementById('isotype-row').appendChild(noneBtn);
 
-    document.getElementById('cta-btn').addEventListener('click', async function() {
-      var name = document.getElementById('brand-name').value.trim();
-      var desc = document.getElementById('brand-desc').value.trim();
-      var avoid = document.getElementById('avoid').value.trim();
-      var brandRef = document.getElementById('brand-ref').value.trim();
-      var errEl = document.getElementById('err');
-      errEl.style.display = 'none';
+    function renderPreviews() {
+      var container = document.getElementById('image-previews');
+      container.innerHTML = '';
+      selectedFiles.forEach(function(file, idx) {
+        var thumb = document.createElement('div');
+        thumb.className = 'img-thumb';
+        var img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.alt = file.name;
+        var rmBtn = document.createElement('button');
+        rmBtn.type = 'button';
+        rmBtn.className = 'img-thumb-remove';
+        rmBtn.setAttribute('aria-label', 'Remove ' + file.name);
+        rmBtn.textContent = '✕';
+        rmBtn.addEventListener('click', function() { selectedFiles.splice(idx, 1); renderPreviews(); });
+        thumb.appendChild(img);
+        thumb.appendChild(rmBtn);
+        container.appendChild(thumb);
+      });
+      var hint = document.getElementById('upload-hint');
+      if (selectedFiles.length >= 5) {
+        hint.textContent = t('uploadMax');
+      } else {
+        hint.innerHTML = '<span data-i18n="uploadBtn">' + t('uploadBtn') + '</span><span data-i18n="uploadSub">' + t('uploadSub') + '</span>';
+      }
+    }
 
-      if (!name) { showErr('Add your brand name.'); return; }
-      if (!desc) { showErr('Add what you do.'); return; }
-      if (selFeels.length === 0) { showErr('Pick at least one personality trait.'); return; }
-      if (selLogotypes.length === 0 && selIsotypes.length === 0 && !isNoneIsotype) { showErr('Select at least one logo format.'); return; }
-      if (selLogotypes.length === 0 && isNoneIsotype) { showErr('Select at least one logotype.'); return; }
+    // ─── Form submit ─────────────────────────────────────────────────────────
+    document.getElementById('brief-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      var name        = document.getElementById('brand-name').value.trim();
+      var desc        = document.getElementById('brand-desc').value.trim();
+      var avoid       = document.getElementById('avoid').value.trim();
+      var brandRef    = document.getElementById('brand-ref').value.trim();
+      var notes       = document.getElementById('notes').value.trim();
+      var clientEmail = document.getElementById('client-email').value.trim();
+
+      document.getElementById('err').style.display = 'none';
+
+      if (!name)        { showErr(t('errName'));        document.getElementById('brand-name').focus();    return; }
+      if (!desc)        { showErr(t('errDesc'));        document.getElementById('brand-desc').focus();    return; }
+      if (!selFeels.length) { showErr(t('errPersonality')); return; }
+      if (!selLogotypes.length && !selIsotypes.length && !isNoneIsotype) { showErr(t('errFormat')); return; }
+      if (!selLogotypes.length && isNoneIsotype) { showErr(t('errLogotype')); return; }
+      if (!clientEmail) { showErr(t('errEmail'));       document.getElementById('client-email').focus();  return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) { showErr(t('errEmailInvalid')); document.getElementById('client-email').focus(); return; }
 
       var btn = document.getElementById('cta-btn');
       btn.disabled = true;
-      btn.innerHTML = '<span class="spin"></span> Generating…';
+      btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = '<span class="spin" aria-hidden="true"></span> ' + t('sending');
 
       try {
-        var res = await fetch('/api/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name, desc,
-            feels: selFeels,
-            logotypes: selLogotypes,
-            isotypes: selIsotypes,
-            isNone: isNoneIsotype,
-            avoid, brandRef
-          })
-        });
+        var fd = new FormData();
+        fd.append('name', name);
+        fd.append('desc', desc);
+        fd.append('avoid', avoid);
+        fd.append('brandRef', brandRef);
+        fd.append('notes', notes);
+        fd.append('clientEmail', clientEmail);
+        fd.append('feels', JSON.stringify(selFeels));
+        fd.append('logotypes', JSON.stringify(selLogotypes));
+        fd.append('isotypes', JSON.stringify(selIsotypes));
+        fd.append('isNone', String(isNoneIsotype));
+        fd.append('typeStyles', JSON.stringify(selTypeStyles));
+        selectedFiles.forEach(function(f) { fd.append('images', f); });
 
+        var res  = await fetch('/api/submit', { method: 'POST', body: fd });
         var data = await res.json();
 
         if (!res.ok || data.error) {
           showErr(data.error || 'Something went wrong.');
         } else {
-          document.getElementById('success').style.display = 'block';
-          document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          var el = document.getElementById('success');
+          el.style.display = 'block';
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.focus();
         }
-      } catch(e) {
-        showErr('Network error: ' + e.message);
+      } catch (err) {
+        showErr('Network error: ' + err.message);
       }
 
       btn.disabled = false;
-      btn.innerHTML = 'Create search queries →';
+      btn.removeAttribute('aria-busy');
+      btn.innerHTML = t('submit');
     });
 
     function showErr(msg) {
@@ -479,39 +893,8 @@
       el.style.display = 'block';
     }
 
-    function renderChips(keywords) {
-      var wrap = document.getElementById('chips-wrap');
-      wrap.innerHTML = '';
-      keywords.forEach(function(k) {
-        var url = 'https://www.pinterest.com/search/pins/?q=' + encodeURIComponent(k.query);
-
-        var chip = document.createElement('a');
-        chip.className = 'chip';
-        chip.href = url;
-        chip.target = '_blank';
-        chip.rel = 'noopener noreferrer';
-        chip.innerHTML = '<span class="chip-query">' + k.query + '</span>'
-          + '<span class="chip-pinterest"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></span>'
-          + '<span class="chip-copy" title="Copy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>';
-
-        var copyBtn = chip.querySelector('.chip-copy');
-        copyBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          navigator.clipboard.writeText(k.query).then(function() {
-            copyBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-            setTimeout(function() {
-              copyBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-            }, 2000);
-          });
-        });
-
-        wrap.appendChild(chip);
-      });
-      var results = document.getElementById('results');
-      results.style.display = 'block';
-      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // ─── Init ────────────────────────────────────────────────────────────────
+    applyLanguage();
   </script>
 </body>
 </html>

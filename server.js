@@ -2,21 +2,41 @@ require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 const { Resend } = require('resend');
- 
+const multer = require('multer');
+
 const app = express();
 const client = new Anthropic();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-app.use(express.json());
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('Only image files are allowed'));
+  }
+});
+
 app.use(express.static('public'));
 
-app.post('/api/submit', async (req, res) => {
-  const { name, desc, feels, logotypes, isotypes, isNone, avoid, brandRef } = req.body;
+app.post('/api/submit', upload.array('images', 5), async (req, res) => {
+  const {
+    name, desc, avoid, brandRef, notes, clientEmail
+  } = req.body;
+
+  const feels      = JSON.parse(req.body.feels      || '[]');
+  const logotypes  = JSON.parse(req.body.logotypes  || '[]');
+  const isotypes   = JSON.parse(req.body.isotypes   || '[]');
+  const typeStyles = JSON.parse(req.body.typeStyles  || '[]');
+  const isNone     = req.body.isNone === 'true';
+  const images = req.files || [];
 
   const formatsDesc = [];
-  if (logotypes && logotypes.length > 0) formatsDesc.push('Logotype: ' + logotypes.join(', '));
+  if (logotypes.length > 0) formatsDesc.push('Logotype: ' + logotypes.join(', '));
   if (isNone) formatsDesc.push('No isotype — logotype only');
-  else if (isotypes && isotypes.length > 0) formatsDesc.push('Isotype: ' + isotypes.join(', '));
+  else if (isotypes.length > 0) formatsDesc.push('Isotype: ' + isotypes.join(', '));
+
+  const hasImages = images.length > 0;
 
   const prompt = [
     'Brand: ' + name,
@@ -25,8 +45,11 @@ app.post('/api/submit', async (req, res) => {
     formatsDesc.join('\n'),
     avoid ? 'Avoid: ' + avoid : '',
     brandRef ? 'Brand reference: ' + brandRef + ' — extract visual DNA from this brand (materials, type style, era, construction) and let it inform the queries without naming the brand directly' : '',
+    typeStyles.length > 0 ? 'Logotype type style: ' + typeStyles.join(', ') + ' — prioritise queries that reference this typographic style' : '',
+    notes ? 'Additional context: ' + notes : '',
+    hasImages ? 'Visual references: ' + images.length + ' image(s) provided above — extract aesthetic qualities, materials, colour palette, and construction style to inform queries' : '',
     '',
-    'Respond with ONLY a raw JSON array — no markdown, no explanation. Generate 8 Pinterest-style search keywords, 2-5 words each.',
+    'Respond with ONLY a raw JSON array — no markdown, no explanation. Generate ' + (hasImages ? '10' : '8') + ' Pinterest-style search keywords, 2-5 words each.',
     '[{"focus":"...","query":"..."},...]',
     '',
     'Rules:',
@@ -35,13 +58,28 @@ app.post('/api/submit', async (req, res) => {
     '- Shape queries around: ' + formatsDesc.join(', '),
     '- Personality (' + feels.join(', ') + ') informs tone without being stated literally',
     avoid ? '- Avoid references to: ' + avoid : '',
+    hasImages ? '- Include at least 3 queries inspired directly by the visual references provided' : '',
   ].filter(Boolean).join('\n');
 
   try {
+    // Build message content — prepend images if provided
+    const content = [];
+    for (const img of images) {
+      content.push({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: img.mimetype,
+          data: img.buffer.toString('base64'),
+        }
+      });
+    }
+    content.push({ type: 'text', text: prompt });
+
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: 'user', content }],
     });
 
     const text = message.content.filter(b => b.type === 'text').map(b => b.text).join('');
@@ -67,10 +105,14 @@ app.post('/api/submit', async (req, res) => {
     const briefRows = [
       ['Brand', name],
       ['What it does', desc],
+      ['Client email', clientEmail],
       ['Personality', feels.join(', ')],
       ['Logo format', formatsDesc.join(', ') || '—'],
+      typeStyles.length > 0 ? ['Type style', typeStyles.join(', ')] : null,
       avoid ? ['Avoid', avoid] : null,
       brandRef ? ['Brand reference', brandRef] : null,
+      notes ? ['Notes', notes] : null,
+      hasImages ? ['Images', images.length + ' reference image(s) provided'] : null,
     ].filter(Boolean).map(([label, value]) => `
       <tr>
         <td style="padding:4px 12px 4px 0;color:#666;font-size:12px;font-family:monospace;white-space:nowrap;vertical-align:top;">${label}</td>
