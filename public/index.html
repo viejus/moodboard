@@ -730,7 +730,7 @@
         uploadMax: 'Max 5 images reached',
         successTitle: 'Brief sent.',
         successSub: "We'll get back to you with your visual direction.",
-        langToggle: 'ES',
+        langToggle: 'EN',
         langToggleLabel: 'Switch to Spanish',
         noneLabel: 'None',
         errName: 'Add your brand name.',
@@ -785,7 +785,7 @@
         uploadMax: 'Máximo 5 imágenes alcanzado',
         successTitle: 'Brief enviado.',
         successSub: 'Nos pondremos en contacto contigo con tu dirección visual.',
-        langToggle: 'EN',
+        langToggle: 'ES',
         langToggleLabel: 'Switch to English',
         noneLabel: 'Ninguno',
         errName: 'Agrega el nombre de tu marca.',
@@ -801,7 +801,7 @@
         avoidPh: 'ej. degradados, clichés de fintech',
         brandRefPh: 'ej. Apple, Stripe, Patagonia',
         notesPh: 'Colores que te gustan, diseñadores que admiras, un estilo que no puedes nombrar…',
-        emailPh: 'tú@ejemplo.com',
+        emailPh: 'tu@ejemplo.com',
         colors: 'Color de marca',
         colorCustom: 'Personalizado',
         otherLabel: 'Otro',
@@ -1391,6 +1391,7 @@
         var fd = new FormData();
         fd.append('name', name);
         fd.append('desc', desc);
+        fd.append('lang', currentLang);
         fd.append('avoid', avoid);
         fd.append('brandRef', brandRef);
         fd.append('notes', notes);

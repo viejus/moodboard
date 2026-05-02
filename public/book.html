@@ -360,7 +360,7 @@
         uploadMax: 'Max 5 images reached',
         successTitle: 'Brief sent.',
         successSub: "We'll get back to you with your cover direction.",
-        langToggle: 'ES',
+        langToggle: 'EN',
         langToggleLabel: 'Switch to Spanish',
         emailPh: 'you@example.com',
         sending: 'Sending…',
@@ -409,9 +409,9 @@
         uploadMax: 'Máximo 5 imágenes alcanzado',
         successTitle: 'Brief enviado.',
         successSub: 'Nos pondremos en contacto contigo con tu dirección de portada.',
-        langToggle: 'EN',
+        langToggle: 'ES',
         langToggleLabel: 'Switch to English',
-        emailPh: 'tú@ejemplo.com',
+        emailPh: 'tu@ejemplo.com',
         sending: 'Enviando…',
         errTitle: 'Agrega el título y autor del libro.',
         errLogline: 'Agrega una sinopsis o conflicto central.',
@@ -709,6 +709,7 @@
       try {
         var fd = new FormData();
         fd.append('title', title);
+        fd.append('lang', currentLang);
         fd.append('logline', logline);
         fd.append('colorMood', colorMood);
         fd.append('avoid', avoid);

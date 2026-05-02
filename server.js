@@ -19,11 +19,59 @@ const upload = multer({
 
 app.use(express.static('public'));
 
+// ── Email i18n ────────────────────────────────────────────────────────────────
+const EMAIL_STRINGS = {
+  en: {
+    logoWordmark:     'Logo & brand moodboard',
+    bookWordmark:     'Book cover brief',
+    brief:            'Brief',
+    pinterestQueries: 'Pinterest queries',
+    visualDirections: 'Visual directions',
+    visualReferences: 'Visual references',
+    logoFooter:       'Submitted via Logo Moodboard',
+    bookFooter:       'Submitted via Book Cover Brief',
+    formSubmitted:    'Form submitted.',
+    willBeInTouch:    name => `We received your brief for <strong style="color:#c8c8c6;">${name}</strong>. We'll be in touch soon.`,
+    logoSubject:      name => `Logo brief — ${name}`,
+    bookSubject:      title => `Book cover brief — ${title}`,
+    confirmSubject:   name => `Form submitted — ${name}`,
+    // brief row labels
+    brand: 'Brand', whatItDoes: 'What it does', clientEmail: 'Client email',
+    personality: 'Personality', logoFormat: 'Logo format', typeStyle: 'Type style',
+    brandColor: 'Brand color', avoid: 'Avoid', brandRef: 'Brand reference', notes: 'Notes',
+    book: 'Book', logline: 'Logline', vibeAndTone: 'Vibe & tone', coverFocus: 'Cover focus',
+    artStyle: 'Art style', colorMood: 'Color / mood', neighbors: 'Comparable books',
+  },
+  es: {
+    logoWordmark:     'Moodboard de logo y marca',
+    bookWordmark:     'Brief de portada',
+    brief:            'Brief',
+    pinterestQueries: 'Consultas de Pinterest',
+    visualDirections: 'Direcciones visuales',
+    visualReferences: 'Referencias visuales',
+    logoFooter:       'Enviado via Logo Moodboard',
+    bookFooter:       'Enviado via Book Cover Brief',
+    formSubmitted:    'Formulario enviado.',
+    willBeInTouch:    name => `Recibimos tu brief para <strong style="color:#c8c8c6;">${name}</strong>. Nos pondremos en contacto pronto.`,
+    logoSubject:      name => `Brief de logo — ${name}`,
+    bookSubject:      title => `Brief de portada — ${title}`,
+    confirmSubject:   name => `Formulario enviado — ${name}`,
+    // brief row labels
+    brand: 'Marca', whatItDoes: 'Qué hace', clientEmail: 'Correo del cliente',
+    personality: 'Personalidad', logoFormat: 'Formato de logo', typeStyle: 'Estilo tipográfico',
+    brandColor: 'Color de marca', avoid: 'Evitar', brandRef: 'Referencia de marca', notes: 'Notas',
+    book: 'Libro', logline: 'Sinopsis', vibeAndTone: 'Vibe y tono', coverFocus: 'Enfoque de portada',
+    artStyle: 'Estilo artístico', colorMood: 'Color / ambiente', neighbors: 'Libros comparables',
+  },
+};
+
 app.post('/api/submit', upload.array('images', 5), async (req, res) => {
   const {
     name, desc, avoid, brandRef, notes, clientEmail, color
   } = req.body;
 
+  const lang      = req.body.lang === 'es' ? 'es' : 'en';
+  const i18n      = EMAIL_STRINGS[lang];
   const feels      = JSON.parse(req.body.feels      || '[]');
   const logotypes  = JSON.parse(req.body.logotypes  || '[]');
   const isotypes   = JSON.parse(req.body.isotypes   || '[]');
@@ -95,16 +143,16 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 
     // ── Brief rows ────────────────────────────────────────────────────────────
     const rows = [
-      ['Brand',        name],
-      ['What it does', desc],
-      ['Client email', clientEmail],
-      ['Personality',  feels.join(', ')],
-      ['Logo format',  formatsDesc.join(', ') || '—'],
-      typeStyles.length > 0 ? ['Type style',      typeStyles.join(', ')] : null,
-      color                 ? ['Brand color',      color]                  : null,
-      avoid                 ? ['Avoid',            avoid]                  : null,
-      brandRef              ? ['Brand reference',  brandRef]               : null,
-      notes                 ? ['Notes',            notes]                  : null,
+      [i18n.brand,       name],
+      [i18n.whatItDoes,  desc],
+      [i18n.clientEmail, clientEmail],
+      [i18n.personality, feels.join(', ')],
+      [i18n.logoFormat,  formatsDesc.join(', ') || '—'],
+      typeStyles.length > 0 ? [i18n.typeStyle,  typeStyles.join(', ')] : null,
+      color                 ? [i18n.brandColor, color]                  : null,
+      avoid                 ? [i18n.avoid,      avoid]                  : null,
+      brandRef              ? [i18n.brandRef,   brandRef]               : null,
+      notes                 ? [i18n.notes,      notes]                  : null,
     ].filter(Boolean);
 
     const briefRowsHtml = rows.map(([label, value]) => `
@@ -135,7 +183,7 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
     });
 
     const imagesHtml = hasImages ? `
-      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual references</p>
+      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">${i18n.visualReferences}</p>
       <table style="border-collapse:collapse;width:100%;">
         <tr>
           ${images.map((_, i) => `<td style="padding:0 6px 0 0;vertical-align:top;width:96px;">
@@ -151,24 +199,24 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
 
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Logo &amp; brand moodboard</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">${i18n.logoWordmark}</p>
 
   <h1 style="font-size:22px;font-weight:400;margin:0 0 4px;color:#f0f0ee;">${name}</h1>
   <p style="font-size:13px;color:#999;margin:0 0 28px;">${desc}</p>
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">Brief</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">${i18n.brief}</p>
   <table style="border-collapse:collapse;width:100%;margin-bottom:32px;">
     ${briefRowsHtml}
   </table>
 
   ${imagesHtml}
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Pinterest queries</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">${i18n.pinterestQueries}</p>
   <table style="border-collapse:collapse;width:100%;">
     ${queriesHtml}
   </table>
 
-  <p style="font-size:10px;color:#444;margin:40px 0 0;">Submitted via Logo Moodboard</p>
+  <p style="font-size:10px;color:#444;margin:40px 0 0;">${i18n.logoFooter}</p>
 </body>
 </html>`;
 
@@ -177,9 +225,9 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Logo &amp; brand moodboard</p>
-  <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">Form submitted.</h1>
-  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#c8c8c6;">${name}</strong>. We'll be in touch soon.</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">${i18n.logoWordmark}</p>
+  <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">${i18n.formSubmitted}</h1>
+  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">${i18n.willBeInTouch(name)}</p>
 </body>
 </html>`;
 
@@ -187,14 +235,14 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
       resend.emails.send({
         from: 'Logo Moodboard <onboarding@resend.dev>',
         to: 'federico.sarria@gmail.com',
-        subject: 'Logo brief — ' + name,
+        subject: i18n.logoSubject(name),
         html,
         attachments,
       }),
       resend.emails.send({
         from: 'Logo Moodboard <onboarding@resend.dev>',
         to: clientEmail,
-        subject: 'Form submitted — ' + name,
+        subject: i18n.confirmSubject(name),
         html: confirmationHtml,
       }),
     ]);
@@ -209,6 +257,8 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
   const { title, logline, colorMood, avoid, neighbors, notes, clientEmail } = req.body;
 
+  const lang      = req.body.lang === 'es' ? 'es' : 'en';
+  const i18n      = EMAIL_STRINGS[lang];
   const vibes      = JSON.parse(req.body.vibes      || '[]');
   const focuses    = JSON.parse(req.body.focuses    || '[]');
   const typeStyles = JSON.parse(req.body.typeStyles  || '[]');
@@ -267,17 +317,17 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 
     // ── Brief rows ────────────────────────────────────────────────────────────
     const rows = [
-      ['Book',            title],
-      ['Logline',         logline],
-      ['Client email',    clientEmail],
-      ['Vibe & tone',     vibes.join(', ')    || '—'],
-      ['Cover focus',     focuses.join(', ')  || '—'],
-      typeStyles.length ? ['Typography',       typeStyles.join(', ')] : null,
-      artStyles.length  ? ['Art style',        artStyles.join(', ')]  : null,
-      colorMood         ? ['Color / mood',     colorMood]             : null,
-      avoid             ? ['Avoid',            avoid]                 : null,
-      neighbors         ? ['Comparable books', neighbors]             : null,
-      notes             ? ['Notes',            notes]                 : null,
+      [i18n.book,        title],
+      [i18n.logline,     logline],
+      [i18n.clientEmail, clientEmail],
+      [i18n.vibeAndTone, vibes.join(', ')   || '—'],
+      [i18n.coverFocus,  focuses.join(', ') || '—'],
+      typeStyles.length ? [i18n.typeStyle,  typeStyles.join(', ')] : null,
+      artStyles.length  ? [i18n.artStyle,   artStyles.join(', ')]  : null,
+      colorMood         ? [i18n.colorMood,  colorMood]             : null,
+      avoid             ? [i18n.avoid,      avoid]                 : null,
+      neighbors         ? [i18n.neighbors,  neighbors]             : null,
+      notes             ? [i18n.notes,      notes]                 : null,
     ].filter(Boolean);
 
     const briefRowsHtml = rows.map(([label, value]) => `
@@ -303,7 +353,7 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
     }));
 
     const imagesHtml = hasImages ? `
-      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual references</p>
+      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">${i18n.visualReferences}</p>
       <table style="border-collapse:collapse;width:100%;">
         <tr>
           ${images.map((_, i) => `<td style="padding:0 6px 0 0;vertical-align:top;width:96px;">
@@ -319,24 +369,24 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
 
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Book cover brief</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">${i18n.bookWordmark}</p>
 
   <h1 style="font-size:22px;font-weight:400;margin:0 0 4px;color:#f0f0ee;">${title}</h1>
   <p style="font-size:13px;color:#999;margin:0 0 28px;">${logline}</p>
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">Brief</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">${i18n.brief}</p>
   <table style="border-collapse:collapse;width:100%;margin-bottom:32px;">
     ${briefRowsHtml}
   </table>
 
   ${imagesHtml}
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual directions</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">${i18n.visualDirections}</p>
   <table style="border-collapse:collapse;width:100%;">
     ${promptsHtml}
   </table>
 
-  <p style="font-size:10px;color:#444;margin:40px 0 0;">Submitted via Book Cover Brief</p>
+  <p style="font-size:10px;color:#444;margin:40px 0 0;">${i18n.bookFooter}</p>
 </body>
 </html>`;
 
@@ -345,9 +395,9 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Book cover brief</p>
-  <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">Form submitted.</h1>
-  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#c8c8c6;">${title}</strong>. We'll be in touch soon.</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">${i18n.bookWordmark}</p>
+  <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">${i18n.formSubmitted}</h1>
+  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">${i18n.willBeInTouch(title)}</p>
 </body>
 </html>`;
 
@@ -355,14 +405,14 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
       resend.emails.send({
         from: 'Book Cover Brief <onboarding@resend.dev>',
         to: 'federico.sarria@gmail.com',
-        subject: 'Book cover brief — ' + title,
+        subject: i18n.bookSubject(title),
         html,
         attachments,
       }),
       resend.emails.send({
         from: 'Book Cover Brief <onboarding@resend.dev>',
         to: clientEmail,
-        subject: 'Form submitted — ' + title,
+        subject: i18n.confirmSubject(title),
         html: bookConfirmationHtml,
       }),
     ]);
