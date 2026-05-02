@@ -554,37 +554,9 @@
     .success-icon { font-size: 20px; color: var(--text-secondary); margin-bottom: .75rem; }
     .success-title { font-size: 16px; font-weight: 400; margin-bottom: .4rem; }
     .success-sub { font-size: 12px; color: var(--text-secondary); }
-
-    /* Background decorative shapes */
-    .bg-deco {
-      position: fixed; top: 0; height: 100vh; width: auto;
-      fill: none; stroke: #f0f0ee; stroke-width: 1;
-      opacity: 0.055; pointer-events: none; z-index: 0;
-    }
-    .bg-deco-left  { left: 0; }
-    .bg-deco-right { right: 0; }
-    .container { position: relative; z-index: 1; }
-    @media (max-width: 900px) { .bg-deco { display: none; } }
   </style>
 </head>
 <body>
-
-  <!-- Left background shapes: large circle, pentagon, rotated square, small circle -->
-  <svg class="bg-deco bg-deco-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 700" aria-hidden="true" focusable="false">
-    <circle cx="285" cy="155" r="145" />
-    <polygon points="95,292 181,350 149,452 41,452 9,350" />
-    <rect x="28" y="520" width="82" height="82" rx="3" transform="rotate(18 69 561)" />
-    <circle cx="230" cy="596" r="38" />
-  </svg>
-
-  <!-- Right background shapes: triangle, hexagon, arc circle, diamond -->
-  <svg class="bg-deco bg-deco-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 700" aria-hidden="true" focusable="false">
-    <polygon points="150,38 268,234 32,234" />
-    <polygon points="228,368 190,437 114,437 76,368 114,299 190,299" />
-    <circle cx="55" cy="575" r="95" />
-    <polygon points="230,490 262,548 230,606 198,548" />
-  </svg>
-
   <a class="skip-link" href="#main-form" data-i18n="skipLink">Skip to form</a>
 
   <div class="container">
