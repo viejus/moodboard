@@ -514,12 +514,11 @@
       font-size: 11px; line-height: 1.6; color: var(--text-secondary);
       white-space: normal; min-width: 220px; max-width: 260px;
       pointer-events: none; opacity: 0;
-      transition: opacity .15s; z-index: 200;
+      transition: opacity .2s; z-index: 200;
       box-shadow: 0 4px 16px rgba(0,0,0,.5);
       text-transform: none; letter-spacing: 0; font-weight: 400;
     }
-    .info-wrap:hover .info-tooltip,
-    .info-btn:focus .info-tooltip { opacity: 1; }
+    .info-tooltip.open { opacity: 1; }
 
     /* Field error states */
     .field-error { border-color: var(--danger) !important; }
@@ -1400,6 +1399,28 @@
       btn.removeAttribute('aria-busy');
       btn.innerHTML = t('submit');
     });
+
+    // ─── Info tooltip ────────────────────────────────────────────────────────
+    (function() {
+      var btn = document.getElementById('logotype-info-btn');
+      var tip = document.getElementById('logotype-info-tooltip');
+      var open = false;
+
+      function close() {
+        if (!open) return;
+        open = false;
+        tip.classList.remove('open');
+      }
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        open = !open;
+        tip.classList.toggle('open', open);
+      });
+
+      document.addEventListener('click', close);
+      window.addEventListener('scroll', close, { passive: true });
+    })();
 
     // ─── Init ────────────────────────────────────────────────────────────────
     applyLanguage();
