@@ -788,15 +788,12 @@
 
     // ─── Color presets ───────────────────────────────────────────────────────
     var PRESET_COLORS = [
-      { name: 'White',    hex: '#ffffff' }, { name: 'Black',   hex: '#111111' },
-      { name: 'Navy',     hex: '#1e3a5f' }, { name: 'Blue',    hex: '#2563eb' },
-      { name: 'Sky Blue', hex: '#38bdf8' }, { name: 'Teal',    hex: '#0d9488' },
-      { name: 'Green',    hex: '#16a34a' }, { name: 'Lime',    hex: '#84cc16' },
-      { name: 'Yellow',   hex: '#eab308' }, { name: 'Gold',    hex: '#b45309' },
-      { name: 'Orange',   hex: '#ea580c' }, { name: 'Red',     hex: '#dc2626' },
-      { name: 'Pink',     hex: '#ec4899' }, { name: 'Purple',  hex: '#7c3aed' },
-      { name: 'Maroon',   hex: '#7f1d1d' }, { name: 'Brown',   hex: '#92400e' },
-      { name: 'Gray',     hex: '#6b7280' }, { name: 'Silver',  hex: '#c0c0c0' },
+      { name: 'White',      hex: '#ffffff' }, { name: 'Black',  hex: '#111111' },
+      { name: 'Blue',       hex: '#2563eb' }, { name: 'Red',    hex: '#dc2626' },
+      { name: 'Orange',     hex: '#ea580c' }, { name: 'Purple', hex: '#7c3aed' },
+      { name: 'Light Blue', hex: '#38bdf8' }, { name: 'Green',  hex: '#16a34a' },
+      { name: 'Yellow',     hex: '#eab308' }, { name: 'Brown',  hex: '#92400e' },
+      { name: 'Gray',       hex: '#6b7280' },
     ];
 
     var LOGOTYPES = [
@@ -1010,7 +1007,7 @@
       dd.appendChild(makeColorBtn(null, t('noneLabel'), null));
       sep(dd);
       PRESET_COLORS.forEach(function(c) {
-        dd.appendChild(makeColorBtn(c.hex, c.name + ' (' + c.hex + ')', c.hex));
+        dd.appendChild(makeColorBtn(c.hex, c.name, c.hex));
       });
       sep(dd);
       dd.appendChild(makeColorBtn('__custom__', t('colorCustom'), null, true));
