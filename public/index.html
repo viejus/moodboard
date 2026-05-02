@@ -588,6 +588,12 @@
       .color-trigger-input,
       .cp-hex-input { font-size: 16px; }
 
+      /* Truncate long placeholders with ellipsis */
+      .text-input::placeholder,
+      .textarea-input::placeholder,
+      .feel-other-input::placeholder,
+      .color-trigger-input::placeholder { text-overflow: ellipsis; }
+
       /* Bigger touch targets on pills */
       .feel-pill { padding: 9px 15px; }
 
