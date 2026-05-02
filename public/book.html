@@ -441,6 +441,12 @@
       var btn = document.getElementById('lang-btn');
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>' + t('langToggle');
       btn.setAttribute('aria-label', t('langToggleLabel'));
+      // Re-translate visible error hints
+      document.querySelectorAll('.field-hint').forEach(function(el) {
+        if (el.style.display !== 'none' && el.dataset.hintKey) {
+          el.textContent = t(el.dataset.hintKey);
+        }
+      });
       rebuildVibePills();
       rebuildTypePills();
       rebuildArtPills();
@@ -641,9 +647,9 @@
       document.querySelectorAll('.field-hint').forEach(function(el) { el.style.display = 'none'; el.textContent = ''; });
     }
 
-    function showHint(id, msg) {
+    function showHint(id, key) {
       var el = document.getElementById(id);
-      if (el) { el.textContent = msg; el.style.display = 'block'; }
+      if (el) { el.dataset.hintKey = key; el.textContent = t(key); el.style.display = 'block'; }
     }
 
     function clearHint(hintId, groupId) {
@@ -681,23 +687,23 @@
 
       if (!title) {
         document.getElementById('book-title').classList.add('field-error');
-        showHint('hint-title', t('errTitle')); hasErrors = true;
+        showHint('hint-title', 'errTitle'); hasErrors = true;
       }
       if (!logline) {
         document.getElementById('logline').classList.add('field-error');
-        showHint('hint-logline', t('errLogline')); hasErrors = true;
+        showHint('hint-logline', 'errLogline'); hasErrors = true;
       }
       if (!selVibes.length) {
         document.getElementById('vibe-row').classList.add('group-error');
-        showHint('hint-vibe', t('errVibe')); hasErrors = true;
+        showHint('hint-vibe', 'errVibe'); hasErrors = true;
       }
       if (!selFocuses.length) {
         document.getElementById('focus-row').classList.add('group-error');
-        showHint('hint-focus', t('errFocus')); hasErrors = true;
+        showHint('hint-focus', 'errFocus'); hasErrors = true;
       }
       if (!clientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
         document.getElementById('client-email').classList.add('field-error');
-        showHint('hint-email', !clientEmail ? t('errEmail') : t('errEmailInvalid')); hasErrors = true;
+        showHint('hint-email', !clientEmail ? 'errEmail' : 'errEmailInvalid'); hasErrors = true;
       }
 
       if (hasErrors) return;
