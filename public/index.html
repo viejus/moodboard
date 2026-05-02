@@ -60,6 +60,22 @@
       padding: 3rem 1.5rem 5rem;
     }
 
+    /* Page nav */
+    .page-nav {
+      display: flex; gap: 0; border-bottom: .5px solid var(--border-tertiary);
+      margin-bottom: 2.5rem;
+    }
+    .page-tab {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-tertiary); text-decoration: none;
+      padding: 10px 0; margin-right: 24px;
+      border-bottom: 1.5px solid transparent; margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .page-tab:hover { color: var(--text-secondary); }
+    .page-tab[aria-current="page"] { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+
     /* Header row */
     .header-row {
       display: flex;
@@ -560,6 +576,10 @@
   <a class="skip-link" href="#main-form" data-i18n="skipLink">Skip to form</a>
 
   <div class="container">
+    <nav class="page-nav" aria-label="Pages">
+      <a class="page-tab" href="/" aria-current="page" data-i18n="tabLogo">Logo brief</a>
+      <a class="page-tab" href="/book.html" data-i18n="tabBook">Book cover</a>
+    </nav>
     <div class="header-row">
       <div class="wordmark" aria-hidden="true" data-i18n="wordmark">Logo &amp; brand moodboard</div>
       <button class="lang-toggle" id="lang-btn" aria-label="Switch to Spanish">ES</button>
@@ -680,6 +700,8 @@
     var STRINGS = {
       en: {
         skipLink: 'Skip to form',
+        tabLogo: 'Logo brief',
+        tabBook: 'Book cover',
         wordmark: 'Logo & brand moodboard',
         h1: 'Find your',
         h1em: 'visual direction',
@@ -733,6 +755,8 @@
       },
       es: {
         skipLink: 'Ir al formulario',
+        tabLogo: 'Logo brief',
+        tabBook: 'Portada de libro',
         wordmark: 'Moodboard de logo y marca',
         h1: 'Encuentra tu',
         h1em: 'dirección visual',

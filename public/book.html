@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Cover Brief</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Roboto+Slab:wght@400&family=Dancing+Script:wght@500&family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400&family=UnifrakturMaguntia&family=Barlow+Condensed:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #f0f0ee;
+      --text-secondary: #b0b0b0;
+      --text-tertiary: #888888;
+      --bg-primary: #111111;
+      --bg-secondary: #1a1a1a;
+      --border-primary: #f0f0ee;
+      --border-secondary: #2e2e2e;
+      --border-tertiary: #222222;
+      --danger: #FF6472;
+      --focus: #f0f0ee;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --gap: 1.8rem;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      padding: .5rem 1rem; background: var(--text-primary);
+      color: var(--bg-primary); font-size: 13px;
+      border-radius: var(--radius-sm); z-index: 100; text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+    .container { max-width: 640px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    /* Page nav */
+    .page-nav {
+      display: flex; gap: 0; border-bottom: .5px solid var(--border-tertiary);
+      margin-bottom: 2.5rem;
+    }
+    .page-tab {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-tertiary); text-decoration: none;
+      padding: 10px 0; margin-right: 24px;
+      border-bottom: 1.5px solid transparent; margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .page-tab:hover { color: var(--text-secondary); }
+    .page-tab[aria-current="page"] { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+
+    .header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .wordmark { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-tertiary); }
+
+    .lang-toggle {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--text-tertiary);
+      background: transparent; border: .5px solid var(--border-secondary);
+      border-radius: 20px; padding: 4px 10px; cursor: pointer; transition: all .15s;
+    }
+    .lang-toggle:hover { border-color: var(--text-tertiary); color: var(--text-secondary); }
+
+    h1 { font-size: 32px; font-weight: 300; line-height: 1.2; margin-bottom: .4rem; }
+    h1 em { font-style: italic; font-weight: 400; color: var(--text-secondary); }
+
+    .sub { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 2.5rem; }
+
+    .field-group { margin-top: var(--gap); }
+
+    label.field-label, .field-legend {
+      display: block; font-size: 10px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: .6rem;
+    }
+
+    .optional { font-size: 10px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-tertiary); }
+
+    .text-input {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      padding: 9px 12px; border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md); background: var(--bg-primary);
+      color: var(--text-primary); outline: none; width: 100%; transition: border-color .15s;
+    }
+    .text-input:focus { border-color: var(--border-primary); }
+    .text-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .text-input::placeholder { color: var(--text-tertiary); }
+
+    .textarea-input {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      padding: 9px 12px; border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md); background: var(--bg-primary);
+      color: var(--text-primary); outline: none; width: 100%;
+      resize: vertical; min-height: 72px; line-height: 1.6; transition: border-color .15s;
+    }
+    .textarea-input:focus { border-color: var(--border-primary); }
+    .textarea-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .textarea-input::placeholder { color: var(--text-tertiary); }
+
+    fieldset { border: none; padding: 0; margin: 0; }
+
+    /* Pills */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .feel-pill {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      padding: 6px 13px; border-radius: 20px;
+      border: .5px solid var(--border-tertiary); background: transparent;
+      color: var(--text-secondary); cursor: pointer; transition: all .15s; user-select: none;
+    }
+    .feel-pill:hover:not([aria-disabled="true"]) { border-color: var(--border-secondary); background: var(--bg-secondary); }
+    .feel-pill[aria-pressed="true"] { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
+    .feel-pill[aria-disabled="true"] { opacity: .25; cursor: not-allowed; pointer-events: none; }
+
+    /* Type style pills */
+    .type-pill {
+      font-size: 14px; padding: 5px 14px; border-radius: 20px;
+      border: .5px solid var(--border-tertiary); background: transparent;
+      color: var(--text-secondary); cursor: pointer; transition: all .15s;
+      user-select: none; line-height: 1.6;
+    }
+    .type-pill:hover { border-color: var(--border-secondary); background: var(--bg-secondary); }
+    .type-pill[aria-pressed="true"] { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
+
+    /* Format cards */
+    .format-sub-label {
+      font-size: 10px; font-weight: 500; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-tertiary);
+      margin-bottom: .6rem; margin-top: 1rem;
+    }
+
+    .format-cards { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+    .fmt-card {
+      font-family: 'JetBrains Mono', monospace; border: .5px solid var(--border-tertiary);
+      border-radius: var(--radius-md); padding: 10px 10px 7px;
+      cursor: pointer; transition: all .15s; background: var(--bg-primary);
+      text-align: center; width: 88px;
+    }
+    .fmt-card:hover { border-color: var(--border-secondary); }
+    .fmt-card[aria-pressed="true"] { border: 1.5px solid var(--text-primary); }
+    .fmt-card svg { display: block; margin: 0 auto 5px; }
+
+    .fmt-card-name { font-size: 10px; font-weight: 500; color: var(--text-tertiary); letter-spacing: .03em; }
+    .fmt-card[aria-pressed="true"] .fmt-card-name { color: var(--text-primary); }
+
+    /* Upload */
+    .upload-area {
+      border: .5px dashed var(--border-secondary); border-radius: var(--radius-md);
+      padding: 20px; text-align: center; cursor: pointer;
+      transition: border-color .15s, background .15s; position: relative;
+    }
+    .upload-area:hover { border-color: var(--text-tertiary); background: var(--bg-secondary); }
+    .upload-area:focus-within { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--radius-md); }
+    .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-hint { font-size: 12px; color: var(--text-tertiary); pointer-events: none; }
+    .upload-hint span { display: block; font-size: 10px; margin-top: 4px; opacity: .6; }
+
+    .image-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+    .img-thumb { position: relative; width: 64px; height: 64px; border-radius: var(--radius-sm); overflow: hidden; border: .5px solid var(--border-secondary); }
+    .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-thumb-remove {
+      position: absolute; top: 2px; right: 2px; width: 16px; height: 16px;
+      background: rgba(0,0,0,.75); border: none; border-radius: 50%; color: #fff;
+      font-size: 9px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; padding: 0; line-height: 1;
+    }
+
+    /* CTA */
+    .cta-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+      padding: 11px 24px; border-radius: 6px; border: none;
+      background: var(--text-primary); color: var(--bg-primary);
+      cursor: pointer; transition: opacity .15s; margin-top: 2rem;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .cta-btn:hover { opacity: .82; }
+    .cta-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .spin { display: inline-block; width: 11px; height: 11px; border: 1.5px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error states */
+    .field-error { border-color: var(--danger) !important; }
+    .group-error { box-shadow: 0 0 0 1px var(--danger); border-radius: var(--radius-sm); }
+    .field-hint { font-size: 11px; color: var(--danger); margin-top: 6px; display: none; }
+
+    .err {
+      font-size: 12px; color: var(--danger); margin-top: .75rem;
+      padding: .6rem 1rem; border: .5px solid var(--danger);
+      border-radius: var(--radius-md); display: none;
+    }
+
+    /* Success */
+    .success {
+      display: none; margin-top: 2.5rem; padding: 2rem;
+      border: .5px solid var(--border-secondary); border-radius: var(--radius-md); text-align: center;
+    }
+    .success-icon { font-size: 20px; color: var(--text-secondary); margin-bottom: .75rem; }
+    .success-title { font-size: 16px; font-weight: 400; margin-bottom: .4rem; }
+    .success-sub { font-size: 12px; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-form" data-i18n="skipLink">Skip to form</a>
+
+  <div class="container">
+    <nav class="page-nav" aria-label="Pages">
+      <a class="page-tab" href="/" data-i18n="tabLogo">Logo brief</a>
+      <a class="page-tab" href="/book.html" aria-current="page" data-i18n="tabBook">Book cover</a>
+    </nav>
+    <div class="header-row">
+      <div class="wordmark" aria-hidden="true" data-i18n="wordmark">Book cover brief</div>
+      <button class="lang-toggle" id="lang-btn" aria-label="Switch to Spanish">ES</button>
+    </div>
+
+    <h1><span data-i18n="h1">Find your</span><br><em data-i18n="h1em">visual direction</em></h1>
+    <p class="sub" data-i18n="sub">Tell us about your story. We'll use this to build a visual baseline for your book cover.</p>
+
+    <main id="main-form">
+      <form id="brief-form" novalidate>
+
+        <div class="field-group">
+          <label class="field-label" for="book-title" data-i18n="bookTitle">Book title &amp; author</label>
+          <input class="text-input" id="book-title" type="text" autocomplete="off" data-i18n-placeholder="bookTitlePh">
+          <p class="field-hint" id="hint-title" role="alert"></p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="logline" data-i18n="logline">The logline (or core conflict)</label>
+          <input class="text-input" id="logline" type="text" autocomplete="off" data-i18n-placeholder="loglinePh">
+          <p class="field-hint" id="hint-logline" role="alert"></p>
+        </div>
+
+        <div class="field-group">
+          <fieldset>
+            <legend class="field-legend" data-i18n="vibe">Vibe &amp; tone — pick up to 3</legend>
+            <div class="pill-row" id="vibe-row" role="group"></div>
+            <p class="field-hint" id="hint-vibe" role="alert"></p>
+          </fieldset>
+        </div>
+
+        <div class="field-group">
+          <fieldset>
+            <legend class="field-legend" data-i18n="coverFocus">Cover focus — select at least one</legend>
+            <div class="format-cards" id="focus-row" role="group"></div>
+            <p class="field-hint" id="hint-focus" role="alert"></p>
+            <div class="format-sub-label"><span data-i18n="typeStyle">Typography style</span> <span class="optional" data-i18n="optional">— optional</span></div>
+            <div class="pill-row" id="type-row" role="group"></div>
+            <div class="format-sub-label"><span data-i18n="artStyle">Art style</span> <span class="optional" data-i18n="optional">— optional</span></div>
+            <div class="pill-row" id="art-row" role="group"></div>
+          </fieldset>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="color-mood"><span data-i18n="colorMood">Dominant color / mood</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <input class="text-input" id="color-mood" type="text" autocomplete="off" data-i18n-placeholder="colorMoodPh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="avoid"><span data-i18n="avoid">What to avoid</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <input class="text-input" id="avoid" type="text" autocomplete="off" data-i18n-placeholder="avoidPh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="neighbors"><span data-i18n="neighbors">Shelf neighbors</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <input class="text-input" id="neighbors" type="text" autocomplete="off" data-i18n-placeholder="neighborsPh">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="notes"><span data-i18n="notes">Anything else we should know</span> <span class="optional" data-i18n="optional">— optional</span></label>
+          <textarea class="textarea-input" id="notes" rows="3" data-i18n-placeholder="notesPh"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="img-upload"><span data-i18n="images">Visual references</span> <span class="optional" data-i18n="imagesOptional">— optional, up to 5 images</span></label>
+          <div class="upload-area" id="upload-area">
+            <input type="file" id="img-upload" name="images" accept="image/*" multiple>
+            <div class="upload-hint" id="upload-hint"><span data-i18n="uploadBtn">Click to upload images</span><span data-i18n="uploadSub">PNG, JPG, WEBP · max 5MB each</span></div>
+          </div>
+          <div class="image-previews" id="image-previews" aria-live="polite"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="client-email" data-i18n="email">Your email</label>
+          <input class="text-input" id="client-email" type="email" autocomplete="email" required data-i18n-placeholder="emailPh">
+          <p class="field-hint" id="hint-email" role="alert"></p>
+        </div>
+
+        <button class="cta-btn" id="cta-btn" type="submit" data-i18n="submit">Send form →</button>
+
+      </form>
+
+      <div class="err" id="err" role="alert" aria-live="assertive"></div>
+
+      <div class="success" id="success" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <div class="success-title" data-i18n="successTitle">Prompts sent.</div>
+        <div class="success-sub" data-i18n="successSub">Check your inbox — your visual direction is on its way.</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ─── i18n ────────────────────────────────────────────────────────────────
+    var currentLang = 'en';
+
+    var STRINGS = {
+      en: {
+        skipLink: 'Skip to form',
+        tabLogo: 'Logo brief',
+        tabBook: 'Book cover',
+        wordmark: 'Book cover brief',
+        h1: 'Tell your',
+        h1em: 'cover story',
+        sub: "Share the details of your book. We'll turn them into image generation prompts for your cover.",
+        bookTitle: 'Book title & author',
+        bookTitlePh: 'e.g. The Midnight Library by Matt Haig',
+        logline: 'The logline (or core conflict)',
+        loglinePh: 'e.g. A detective must solve a murder on a generation ship before it reaches its destination.',
+        vibe: 'Vibe & tone — pick up to 3',
+        coverFocus: 'Cover focus — select at least one',
+        typeStyle: 'Typography style',
+        artStyle: 'Art style',
+        colorMood: 'Dominant color / mood',
+        colorMoodPh: 'e.g. Deep blues, neon accents, or "just make it look cold."',
+        avoid: 'What to avoid',
+        avoidPh: 'e.g. No floating heads, no generic fantasy fonts.',
+        neighbors: 'Shelf neighbors',
+        neighborsPh: 'e.g. Dune, The Hunger Games, Neuromancer.',
+        notes: 'Anything else we should know',
+        notesPh: "Specific symbols in the story, themes, or a vibe you can't quite name…",
+        images: 'Visual references',
+        imagesOptional: '— optional, up to 5 images',
+        email: 'Your email',
+        submit: 'Send form →',
+        optional: '— optional',
+        uploadBtn: 'Click to upload images',
+        uploadSub: 'PNG, JPG, WEBP · max 5MB each',
+        uploadMax: 'Max 5 images reached',
+        successTitle: 'Prompts sent.',
+        successSub: 'Check your inbox — your visual direction is on its way.',
+        langToggle: 'ES',
+        langToggleLabel: 'Switch to Spanish',
+        emailPh: 'you@example.com',
+        sending: 'Sending…',
+        errTitle: 'Add your book title and author.',
+        errLogline: 'Add a logline or core conflict.',
+        errVibe: 'Pick at least one vibe.',
+        errFocus: 'Select at least one cover focus.',
+        errEmail: 'Add your email address.',
+        errEmailInvalid: 'Enter a valid email address.',
+        vibes: ['Gritty','Whimsical','Minimalist','Cinematic','Nostalgic','Fast-paced','Atmospheric','Dark','Hopeful','Academic'],
+        typeStyles: ['Serif','Sans-serif','Slab Serif','Script','Display','Geometric','Gothic','Condensed'],
+        artStyles: ['Vector / Flat','Painterly','Photorealistic','Abstract','Line Art'],
+        coverFocusNames: { typography: 'Typography', character: 'Character', symbolic: 'Symbolic', landscape: 'Landscape' },
+      },
+      es: {
+        skipLink: 'Ir al formulario',
+        tabLogo: 'Logo brief',
+        tabBook: 'Portada de libro',
+        wordmark: 'Brief de portada',
+        h1: 'Cuéntanos tu',
+        h1em: 'historia de portada',
+        sub: 'Comparte los detalles de tu libro. Los convertiremos en prompts para generar la imagen de tu portada.',
+        bookTitle: 'Título y autor',
+        bookTitlePh: 'ej. La biblioteca de medianoche de Matt Haig',
+        logline: 'La sinopsis (o conflicto central)',
+        loglinePh: 'ej. Un detective debe resolver un asesinato en una nave generacional antes de llegar a su destino.',
+        vibe: 'Vibe y tono — elige hasta 3',
+        coverFocus: 'Enfoque de portada — selecciona al menos uno',
+        typeStyle: 'Estilo tipográfico',
+        artStyle: 'Estilo artístico',
+        colorMood: 'Color dominante / ambiente',
+        colorMoodPh: 'ej. Azules profundos, acentos de neón, o "solo hazlo ver frío."',
+        avoid: 'Qué evitar',
+        avoidPh: 'ej. Sin cabezas flotantes, sin fuentes fantásticas genéricas.',
+        neighbors: 'Libros comparables',
+        neighborsPh: 'ej. Dune, Los juegos del hambre, Neuromancer.',
+        notes: '¿Algo más que debamos saber?',
+        notesPh: 'Símbolos específicos en la historia, temas, o un ambiente que no puedes nombrar…',
+        images: 'Referencias visuales',
+        imagesOptional: '— opcional, hasta 5 imágenes',
+        email: 'Tu correo electrónico',
+        submit: 'Enviar formulario →',
+        optional: '— opcional',
+        uploadBtn: 'Clic para subir imágenes',
+        uploadSub: 'PNG, JPG, WEBP · máx. 5MB cada uno',
+        uploadMax: 'Máximo 5 imágenes alcanzado',
+        successTitle: 'Prompts enviados.',
+        successSub: 'Revisa tu bandeja — tu dirección visual está en camino.',
+        langToggle: 'EN',
+        langToggleLabel: 'Switch to English',
+        emailPh: 'tú@ejemplo.com',
+        sending: 'Enviando…',
+        errTitle: 'Agrega el título y autor del libro.',
+        errLogline: 'Agrega una sinopsis o conflicto central.',
+        errVibe: 'Elige al menos un vibe.',
+        errFocus: 'Selecciona al menos un enfoque de portada.',
+        errEmail: 'Agrega tu dirección de correo.',
+        errEmailInvalid: 'Ingresa una dirección de correo válida.',
+        vibes: ['Crudo','Fantástico','Minimalista','Cinematográfico','Nostálgico','Trepidante','Atmosférico','Oscuro','Esperanzador','Académico'],
+        typeStyles: ['Serif','Sin serifa','Slab Serif','Script','Display','Geométrica','Gótica','Condensada'],
+        artStyles: ['Vector / Plano','Pictórico','Fotorrealista','Abstracto','Arte lineal'],
+        coverFocusNames: { typography: 'Tipografía', character: 'Personaje', symbolic: 'Simbólico', landscape: 'Paisaje' },
+      }
+    };
+
+    function t(key) { return STRINGS[currentLang][key] || STRINGS.en[key] || key; }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (key === 'wordmark') { el.innerHTML = t('wordmark'); return; }
+        el.textContent = t(key);
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      });
+      var btn = document.getElementById('lang-btn');
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>' + t('langToggle');
+      btn.setAttribute('aria-label', t('langToggleLabel'));
+      rebuildVibePills();
+      rebuildTypePills();
+      rebuildArtPills();
+      rebuildFocusCards();
+      renderPreviews();
+    }
+
+    document.getElementById('lang-btn').addEventListener('click', function() {
+      currentLang = currentLang === 'en' ? 'es' : 'en';
+      applyLanguage();
+    });
+
+    // ─── State ───────────────────────────────────────────────────────────────
+    var selVibes = [];
+    var selFocuses = [];
+    var selTypeStyles = [];
+    var selArtStyles = [];
+
+    // ─── Cover focus cards ───────────────────────────────────────────────────
+    var COVER_FOCUSES = [
+      {
+        id: 'typography',
+        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="29" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#f0f0ee" text-anchor="middle" letter-spacing="-1">Aa</text></svg>'
+      },
+      {
+        id: 'character',
+        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="30" cy="11" r="5" fill="none" stroke="#f0f0ee" stroke-width="1.2"/><line x1="30" y1="16" x2="30" y2="30" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round"/><line x1="21" y1="22" x2="39" y2="22" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round"/><line x1="30" y1="30" x2="23" y2="39" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round"/><line x1="30" y1="30" x2="37" y2="39" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round"/></svg>'
+      },
+      {
+        id: 'symbolic',
+        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><polygon points="30,7 50,20 30,33 10,20" fill="none" stroke="#f0f0ee" stroke-width="1.2"/><line x1="10" y1="20" x2="50" y2="20" stroke="#f0f0ee" stroke-width=".6" opacity=".4"/><line x1="30" y1="7" x2="30" y2="33" stroke="#f0f0ee" stroke-width=".6" opacity=".4"/></svg>'
+      },
+      {
+        id: 'landscape',
+        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><polyline points="0,35 10,22 20,28 32,12 44,24 60,16" fill="none" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="0" y1="35" x2="60" y2="35" stroke="#f0f0ee" stroke-width=".6" opacity=".35"/></svg>'
+      },
+    ];
+
+    // ─── Type fonts ──────────────────────────────────────────────────────────
+    var TYPE_FONTS = [
+      { family: 'Georgia, serif',                    style: 'normal', weight: '400' },
+      { family: 'Arial, Helvetica, sans-serif',      style: 'normal', weight: '400' },
+      { family: '"Roboto Slab", serif',              style: 'normal', weight: '400' },
+      { family: '"Dancing Script", cursive',         style: 'normal', weight: '500' },
+      { family: '"Playfair Display", serif',         style: 'italic', weight: '400' },
+      { family: '"Nunito", sans-serif',              style: 'normal', weight: '400' },
+      { family: '"UnifrakturMaguntia", cursive',     style: 'normal', weight: '400' },
+      { family: '"Barlow Condensed", sans-serif',    style: 'normal', weight: '400' },
+    ];
+
+    // ─── Vibe pills ──────────────────────────────────────────────────────────
+    function rebuildVibePills() {
+      var row = document.getElementById('vibe-row');
+      var prevActive = selVibes.slice();
+      row.innerHTML = '';
+      selVibes = [];
+      var labels = t('vibes');
+      var EN_VIBES = STRINGS.en.vibes;
+      labels.forEach(function(label, i) {
+        var key = EN_VIBES[i];
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'feel-pill'; btn.textContent = label;
+        var wasActive = prevActive.indexOf(key) > -1;
+        btn.setAttribute('aria-pressed', wasActive ? 'true' : 'false');
+        if (wasActive) selVibes.push(key);
+        btn.addEventListener('click', function() {
+          var idx = selVibes.indexOf(key);
+          if (idx > -1) {
+            selVibes.splice(idx, 1);
+            btn.setAttribute('aria-pressed', 'false');
+          } else if (selVibes.length < 3) {
+            selVibes.push(key);
+            btn.setAttribute('aria-pressed', 'true');
+          }
+          updateVibeDisabled();
+          clearHint('hint-vibe', 'vibe-row');
+        });
+        row.appendChild(btn);
+      });
+      updateVibeDisabled();
+    }
+
+    function updateVibeDisabled() {
+      var full = selVibes.length >= 3;
+      document.querySelectorAll('#vibe-row .feel-pill').forEach(function(b) {
+        if (b.getAttribute('aria-pressed') !== 'true')
+          b.setAttribute('aria-disabled', full ? 'true' : 'false');
+      });
+    }
+
+    // ─── Focus cards ─────────────────────────────────────────────────────────
+    function rebuildFocusCards() {
+      var row = document.getElementById('focus-row');
+      var prev = selFocuses.slice();
+      row.innerHTML = '';
+      selFocuses = [];
+      var names = t('coverFocusNames');
+      COVER_FOCUSES.forEach(function(item) {
+        var card = document.createElement('button');
+        card.type = 'button'; card.className = 'fmt-card';
+        card.setAttribute('aria-pressed', 'false');
+        card.innerHTML = item.svg + '<div class="fmt-card-name">' + names[item.id] + '</div>';
+        if (prev.indexOf(item.id) > -1) {
+          card.setAttribute('aria-pressed', 'true');
+          selFocuses.push(item.id);
+        }
+        card.addEventListener('click', function() {
+          var idx = selFocuses.indexOf(item.id);
+          if (idx > -1) { selFocuses.splice(idx, 1); card.setAttribute('aria-pressed', 'false'); }
+          else { selFocuses.push(item.id); card.setAttribute('aria-pressed', 'true'); }
+          clearHint('hint-focus', 'focus-row');
+        });
+        row.appendChild(card);
+      });
+    }
+
+    // ─── Type style pills ────────────────────────────────────────────────────
+    function rebuildTypePills() {
+      var row = document.getElementById('type-row');
+      row.innerHTML = '';
+      selTypeStyles = [];
+      var labels = t('typeStyles');
+      var EN_TYPES = STRINGS.en.typeStyles;
+      labels.forEach(function(label, i) {
+        var font = TYPE_FONTS[i] || {};
+        var key = EN_TYPES[i];
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'type-pill'; btn.textContent = label;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.style.fontFamily  = font.family  || 'inherit';
+        btn.style.fontStyle   = font.style   || 'normal';
+        btn.style.fontWeight  = font.weight  || '400';
+        btn.addEventListener('click', function() {
+          var idx = selTypeStyles.indexOf(key);
+          if (idx > -1) { selTypeStyles.splice(idx, 1); btn.setAttribute('aria-pressed', 'false'); }
+          else { selTypeStyles.push(key); btn.setAttribute('aria-pressed', 'true'); }
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    // ─── Art style pills ─────────────────────────────────────────────────────
+    function rebuildArtPills() {
+      var row = document.getElementById('art-row');
+      row.innerHTML = '';
+      selArtStyles = [];
+      var labels = t('artStyles');
+      var EN_ARTS = STRINGS.en.artStyles;
+      labels.forEach(function(label, i) {
+        var key = EN_ARTS[i];
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'feel-pill'; btn.textContent = label;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', function() {
+          var idx = selArtStyles.indexOf(key);
+          if (idx > -1) { selArtStyles.splice(idx, 1); btn.setAttribute('aria-pressed', 'false'); }
+          else { selArtStyles.push(key); btn.setAttribute('aria-pressed', 'true'); }
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    // ─── Image upload ────────────────────────────────────────────────────────
+    var selectedFiles = [];
+
+    document.getElementById('img-upload').addEventListener('change', function(e) {
+      Array.from(e.target.files).forEach(function(file) {
+        if (selectedFiles.length < 5) selectedFiles.push(file);
+      });
+      e.target.value = '';
+      renderPreviews();
+    });
+
+    function renderPreviews() {
+      var container = document.getElementById('image-previews');
+      container.innerHTML = '';
+      selectedFiles.forEach(function(file, idx) {
+        var thumb = document.createElement('div'); thumb.className = 'img-thumb';
+        var img = document.createElement('img'); img.src = URL.createObjectURL(file); img.alt = file.name;
+        var rmBtn = document.createElement('button');
+        rmBtn.type = 'button'; rmBtn.className = 'img-thumb-remove';
+        rmBtn.setAttribute('aria-label', 'Remove ' + file.name); rmBtn.textContent = '✕';
+        rmBtn.addEventListener('click', function() { selectedFiles.splice(idx, 1); renderPreviews(); });
+        thumb.appendChild(img); thumb.appendChild(rmBtn); container.appendChild(thumb);
+      });
+      var hint = document.getElementById('upload-hint');
+      if (selectedFiles.length >= 5) {
+        hint.textContent = t('uploadMax');
+      } else {
+        hint.innerHTML = '<span data-i18n="uploadBtn">' + t('uploadBtn') + '</span><span data-i18n="uploadSub">' + t('uploadSub') + '</span>';
+      }
+    }
+
+    // ─── Form submit ─────────────────────────────────────────────────────────
+    function clearAllErrors() {
+      document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
+      document.querySelectorAll('.group-error').forEach(function(el) { el.classList.remove('group-error'); });
+      document.querySelectorAll('.field-hint').forEach(function(el) { el.style.display = 'none'; el.textContent = ''; });
+    }
+
+    function showHint(id, msg) {
+      var el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    function clearHint(hintId, groupId) {
+      var h = document.getElementById(hintId);
+      if (h) { h.style.display = 'none'; h.textContent = ''; }
+      if (groupId) {
+        var g = document.getElementById(groupId);
+        if (g) g.classList.remove('group-error');
+      }
+    }
+
+    [['book-title','hint-title'],['logline','hint-logline'],['client-email','hint-email']].forEach(function(pair) {
+      document.getElementById(pair[0]).addEventListener('input', function() {
+        this.classList.remove('field-error');
+        var h = document.getElementById(pair[1]);
+        if (h) { h.style.display = 'none'; h.textContent = ''; }
+      });
+    });
+
+    document.getElementById('brief-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      var title       = document.getElementById('book-title').value.trim();
+      var logline     = document.getElementById('logline').value.trim();
+      var colorMood   = document.getElementById('color-mood').value.trim();
+      var avoid       = document.getElementById('avoid').value.trim();
+      var neighbors   = document.getElementById('neighbors').value.trim();
+      var notes       = document.getElementById('notes').value.trim();
+      var clientEmail = document.getElementById('client-email').value.trim();
+
+      clearAllErrors();
+      document.getElementById('err').style.display = 'none';
+
+      var hasErrors = false;
+
+      if (!title) {
+        document.getElementById('book-title').classList.add('field-error');
+        showHint('hint-title', t('errTitle')); hasErrors = true;
+      }
+      if (!logline) {
+        document.getElementById('logline').classList.add('field-error');
+        showHint('hint-logline', t('errLogline')); hasErrors = true;
+      }
+      if (!selVibes.length) {
+        document.getElementById('vibe-row').classList.add('group-error');
+        showHint('hint-vibe', t('errVibe')); hasErrors = true;
+      }
+      if (!selFocuses.length) {
+        document.getElementById('focus-row').classList.add('group-error');
+        showHint('hint-focus', t('errFocus')); hasErrors = true;
+      }
+      if (!clientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+        document.getElementById('client-email').classList.add('field-error');
+        showHint('hint-email', !clientEmail ? t('errEmail') : t('errEmailInvalid')); hasErrors = true;
+      }
+
+      if (hasErrors) return;
+
+      var btn = document.getElementById('cta-btn');
+      btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = '<span class="spin" aria-hidden="true"></span> ' + t('sending');
+
+      try {
+        var fd = new FormData();
+        fd.append('title', title);
+        fd.append('logline', logline);
+        fd.append('colorMood', colorMood);
+        fd.append('avoid', avoid);
+        fd.append('neighbors', neighbors);
+        fd.append('notes', notes);
+        fd.append('clientEmail', clientEmail);
+        fd.append('vibes', JSON.stringify(selVibes));
+        fd.append('focuses', JSON.stringify(selFocuses));
+        fd.append('typeStyles', JSON.stringify(selTypeStyles));
+        fd.append('artStyles', JSON.stringify(selArtStyles));
+        selectedFiles.forEach(function(f) { fd.append('images', f); });
+
+        var res  = await fetch('/api/submit-book', { method: 'POST', body: fd });
+        var data = await res.json();
+
+        if (!res.ok || data.error) {
+          var errEl = document.getElementById('err');
+          errEl.textContent = data.error || 'Something went wrong.';
+          errEl.style.display = 'block';
+        } else {
+          var el = document.getElementById('success');
+          el.style.display = 'block';
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.focus();
+        }
+      } catch (err) {
+        var errEl = document.getElementById('err');
+        errEl.textContent = 'Network error: ' + err.message;
+        errEl.style.display = 'block';
+      }
+
+      btn.disabled = false; btn.removeAttribute('aria-busy');
+      btn.innerHTML = t('submit');
+    });
+
+    // ─── Init ────────────────────────────────────────────────────────────────
+    applyLanguage();
+  </script>
+</body>
+</html>
