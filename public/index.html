@@ -1077,7 +1077,7 @@
     // ─── Color section ───────────────────────────────────────────────────────
     var colorDropdownOpen = false;
 
-    function buildColorSection() { renderDropdown(''); }
+    function buildColorSection() { renderDropdown(''); refreshColorUI(); }
 
     function renderDropdown(query) {
       var dd = document.getElementById('color-dropdown');
@@ -1106,13 +1106,21 @@
         var names = t('colorNames');
         PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
       } else {
-        // Name search
-        var matches = findColorsByName(query);
-        var list = matches.length > 0 ? matches.slice(0,10) : [];
-        list.forEach(function(c){ dd.appendChild(makeColorBtn(c[1], c[0], c[1])); });
-        if (matches.length === 0) {
-          var names = t('colorNames');
-          PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
+        // Name search: translated presets first, then English CSS database
+        var presetNames = t('colorNames');
+        var lowerQ = query.toLowerCase();
+        var shownHexes = {};
+        presetNames.forEach(function(name, i) {
+          if (name.toLowerCase().includes(lowerQ)) {
+            dd.appendChild(makeColorBtn(PRESET_COLORS[i].hex, name, PRESET_COLORS[i].hex));
+            shownHexes[PRESET_COLORS[i].hex] = true;
+          }
+        });
+        var cssMatches = findColorsByName(query).filter(function(c){ return !shownHexes[c[1]]; });
+        cssMatches.slice(0,8).forEach(function(c){ dd.appendChild(makeColorBtn(c[1], c[0], c[1])); });
+        // Fallback: show all presets
+        if (!Object.keys(shownHexes).length && !cssMatches.length) {
+          presetNames.forEach(function(name, i){ dd.appendChild(makeColorBtn(PRESET_COLORS[i].hex, name, PRESET_COLORS[i].hex)); });
         }
       }
 
@@ -1180,9 +1188,25 @@
       if (hex) {
         selColor = hex; updateColorDot(hex); renderDropdown(trimmed);
       } else {
-        var matches = findColorsByName(trimmed);
-        if (matches.length>0) { selColor=matches[0][1]; updateColorDot(selColor); }
-        else { selColor=null; updateColorDot(null); }
+        // Try translated preset names first, then English CSS names
+        var presetNames = t('colorNames');
+        var lowerQ = trimmed.toLowerCase();
+        var presetIdx = -1;
+        for (var i = 0; i < presetNames.length; i++) {
+          if (presetNames[i].toLowerCase() === lowerQ) { presetIdx = i; break; }
+        }
+        if (presetIdx === -1) {
+          for (var i = 0; i < presetNames.length; i++) {
+            if (presetNames[i].toLowerCase().startsWith(lowerQ)) { presetIdx = i; break; }
+          }
+        }
+        if (presetIdx > -1) {
+          selColor = PRESET_COLORS[presetIdx].hex; updateColorDot(selColor);
+        } else {
+          var cssMatches = findColorsByName(trimmed);
+          selColor = cssMatches.length > 0 ? cssMatches[0][1] : null;
+          updateColorDot(selColor);
+        }
         renderDropdown(trimmed);
       }
     }
