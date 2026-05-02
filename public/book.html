@@ -311,11 +311,15 @@
 
       <div class="success" id="success" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
         <div class="success-icon" aria-hidden="true">✓</div>
-        <div class="success-title" data-i18n="successTitle">Prompts sent.</div>
-        <div class="success-sub" data-i18n="successSub">Check your inbox — your visual direction is on its way.</div>
+        <div class="success-title" data-i18n="successTitle">Brief sent.</div>
+        <div class="success-sub" data-i18n="successSub">We'll get back to you with your cover direction.</div>
       </div>
     </main>
   </div>
+
+  <footer style="text-align:center;padding:2rem 1.5rem 3rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:#444;">
+    Vibecoded with <a href="https://claude.ai" style="color:#444;text-decoration:none;border-bottom:.5px solid #333;">Claude</a> by Federico Sarría · 2026
+  </footer>
 
   <script>
     // ─── i18n ────────────────────────────────────────────────────────────────
@@ -354,8 +358,8 @@
         uploadBtn: 'Click to upload images',
         uploadSub: 'PNG, JPG, WEBP · max 5MB each',
         uploadMax: 'Max 5 images reached',
-        successTitle: 'Prompts sent.',
-        successSub: 'Check your inbox — your visual direction is on its way.',
+        successTitle: 'Brief sent.',
+        successSub: "We'll get back to you with your cover direction.",
         langToggle: 'ES',
         langToggleLabel: 'Switch to Spanish',
         emailPh: 'you@example.com',
@@ -403,8 +407,8 @@
         uploadBtn: 'Clic para subir imágenes',
         uploadSub: 'PNG, JPG, WEBP · máx. 5MB cada uno',
         uploadMax: 'Máximo 5 imágenes alcanzado',
-        successTitle: 'Prompts enviados.',
-        successSub: 'Revisa tu bandeja — tu dirección visual está en camino.',
+        successTitle: 'Brief enviado.',
+        successSub: 'Nos pondremos en contacto contigo con tu dirección de portada.',
         langToggle: 'EN',
         langToggleLabel: 'Switch to English',
         emailPh: 'tú@ejemplo.com',
@@ -471,7 +475,7 @@
       },
       {
         id: 'landscape',
-        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><polyline points="0,35 10,22 20,28 32,12 44,24 60,16" fill="none" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="0" y1="35" x2="60" y2="35" stroke="#f0f0ee" stroke-width=".6" opacity=".35"/></svg>'
+        svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><circle cx="49" cy="10" r="5" fill="none" stroke="#f0f0ee" stroke-width="1"/><polyline points="0,32 16,9 32,32" fill="none" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><polyline points="24,32 40,15 60,32" fill="none" stroke="#f0f0ee" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="0" y1="32" x2="60" y2="32" stroke="#f0f0ee" stroke-width=".5" opacity=".4"/><polyline points="0,38 14,35 30,37 46,34 60,36" fill="none" stroke="#f0f0ee" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/></svg>'
       },
     ];
 

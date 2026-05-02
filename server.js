@@ -109,8 +109,8 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 
     const briefRowsHtml = rows.map(([label, value]) => `
       <tr>
-        <td style="padding:5px 16px 5px 0;color:#555;font-size:11px;font-family:monospace;white-space:nowrap;vertical-align:top;text-transform:uppercase;letter-spacing:.06em;">${label}</td>
-        <td style="padding:5px 0;color:#999;font-size:12px;font-family:monospace;line-height:1.5;">${value}</td>
+        <td style="padding:5px 16px 5px 0;color:#888;font-size:11px;font-family:monospace;white-space:nowrap;vertical-align:top;text-transform:uppercase;letter-spacing:.06em;">${label}</td>
+        <td style="padding:5px 0;color:#c8c8c6;font-size:12px;font-family:monospace;line-height:1.5;">${value}</td>
       </tr>`).join('');
 
     // ── Search queries ────────────────────────────────────────────────────────
@@ -118,7 +118,7 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
       const url = 'https://www.pinterest.com/search/pins/?q=' + encodeURIComponent(k.query);
       return `<tr>
         <td style="padding:7px 0;border-bottom:1px solid #1e1e1e;">
-          <span style="color:#444;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:2px;">${k.focus}</span>
+          <span style="color:#888;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:2px;">${k.focus}</span>
           <a href="${url}" style="color:#c8c8c6;font-family:monospace;font-size:13px;text-decoration:none;">${k.query} →</a>
         </td>
       </tr>`;
@@ -135,7 +135,7 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
     });
 
     const imagesHtml = hasImages ? `
-      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:32px 0 10px;">Visual references</p>
+      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual references</p>
       <table style="border-collapse:collapse;width:100%;">
         <tr>
           ${images.map((_, i) => `<td style="padding:0 6px 0 0;vertical-align:top;width:96px;">
@@ -151,24 +151,24 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
 
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#333;margin:0 0 28px;">Logo &amp; brand moodboard</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Logo &amp; brand moodboard</p>
 
   <h1 style="font-size:22px;font-weight:400;margin:0 0 4px;color:#f0f0ee;">${name}</h1>
-  <p style="font-size:13px;color:#555;margin:0 0 28px;">${desc}</p>
+  <p style="font-size:13px;color:#999;margin:0 0 28px;">${desc}</p>
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:0 0 10px;">Brief</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">Brief</p>
   <table style="border-collapse:collapse;width:100%;margin-bottom:32px;">
     ${briefRowsHtml}
   </table>
 
   ${imagesHtml}
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:32px 0 10px;">Pinterest queries</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Pinterest queries</p>
   <table style="border-collapse:collapse;width:100%;">
     ${queriesHtml}
   </table>
 
-  <p style="font-size:10px;color:#222;margin:40px 0 0;">Submitted via Logo Moodboard</p>
+  <p style="font-size:10px;color:#444;margin:40px 0 0;">Submitted via Logo Moodboard</p>
 </body>
 </html>`;
 
@@ -177,9 +177,9 @@ app.post('/api/submit', upload.array('images', 5), async (req, res) => {
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#333;margin:0 0 28px;">Logo &amp; brand moodboard</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Logo &amp; brand moodboard</p>
   <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">Form submitted.</h1>
-  <p style="font-size:13px;color:#555;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#888;">${name}</strong>. We'll be in touch soon.</p>
+  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#c8c8c6;">${name}</strong>. We'll be in touch soon.</p>
 </body>
 </html>`;
 
@@ -282,16 +282,16 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 
     const briefRowsHtml = rows.map(([label, value]) => `
       <tr>
-        <td style="padding:5px 16px 5px 0;color:#555;font-size:11px;font-family:monospace;white-space:nowrap;vertical-align:top;text-transform:uppercase;letter-spacing:.06em;">${label}</td>
-        <td style="padding:5px 0;color:#999;font-size:12px;font-family:monospace;line-height:1.5;">${value}</td>
+        <td style="padding:5px 16px 5px 0;color:#888;font-size:11px;font-family:monospace;white-space:nowrap;vertical-align:top;text-transform:uppercase;letter-spacing:.06em;">${label}</td>
+        <td style="padding:5px 0;color:#c8c8c6;font-size:12px;font-family:monospace;line-height:1.5;">${value}</td>
       </tr>`).join('');
 
     // ── Prompts ───────────────────────────────────────────────────────────────
     const promptsHtml = prompts.map((p, i) => `
       <tr>
         <td style="padding:14px 0;border-bottom:1px solid #1e1e1e;">
-          <span style="color:#444;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:6px;">${i + 1}. ${p.direction}</span>
-          <div style="background:#191919;border-radius:4px;padding:12px 14px;font-family:monospace;font-size:12px;color:#c8c8c6;line-height:1.7;">${p.prompt}</div>
+          <span style="color:#888;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:6px;">${i + 1}. ${p.direction}</span>
+          <div style="background:#1a1a1a;border-radius:4px;padding:12px 14px;font-family:monospace;font-size:12px;color:#c8c8c6;line-height:1.7;">${p.prompt}</div>
         </td>
       </tr>`).join('');
 
@@ -303,7 +303,7 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
     }));
 
     const imagesHtml = hasImages ? `
-      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:32px 0 10px;">Visual references</p>
+      <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual references</p>
       <table style="border-collapse:collapse;width:100%;">
         <tr>
           ${images.map((_, i) => `<td style="padding:0 6px 0 0;vertical-align:top;width:96px;">
@@ -319,24 +319,24 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
 
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#333;margin:0 0 28px;">Book cover brief</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Book cover brief</p>
 
   <h1 style="font-size:22px;font-weight:400;margin:0 0 4px;color:#f0f0ee;">${title}</h1>
-  <p style="font-size:13px;color:#555;margin:0 0 28px;">${logline}</p>
+  <p style="font-size:13px;color:#999;margin:0 0 28px;">${logline}</p>
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:0 0 10px;">Brief</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:0 0 10px;">Brief</p>
   <table style="border-collapse:collapse;width:100%;margin-bottom:32px;">
     ${briefRowsHtml}
   </table>
 
   ${imagesHtml}
 
-  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#333;margin:32px 0 10px;">Visual directions</p>
+  <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin:32px 0 10px;">Visual directions</p>
   <table style="border-collapse:collapse;width:100%;">
     ${promptsHtml}
   </table>
 
-  <p style="font-size:10px;color:#222;margin:40px 0 0;">Submitted via Book Cover Brief</p>
+  <p style="font-size:10px;color:#444;margin:40px 0 0;">Submitted via Book Cover Brief</p>
 </body>
 </html>`;
 
@@ -345,9 +345,9 @@ app.post('/api/submit-book', upload.array('images', 5), async (req, res) => {
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="background:#111;color:#c8c8c6;font-family:monospace;padding:40px 24px;max-width:560px;margin:0 auto;">
-  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#333;margin:0 0 28px;">Book cover brief</p>
+  <p style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin:0 0 28px;">Book cover brief</p>
   <h1 style="font-size:22px;font-weight:400;margin:0 0 8px;color:#f0f0ee;">Form submitted.</h1>
-  <p style="font-size:13px;color:#555;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#888;">${title}</strong>. We'll be in touch soon.</p>
+  <p style="font-size:13px;color:#999;margin:0 0 0;line-height:1.6;">We received your brief for <strong style="color:#c8c8c6;">${title}</strong>. We'll be in touch soon.</p>
 </body>
 </html>`;
 
