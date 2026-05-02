@@ -205,6 +205,125 @@
       pointer-events: none;
     }
 
+    /* Other feel input */
+    .feel-other-wrap { margin-top: 8px; display: none; }
+    .feel-other-input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: .5px solid var(--border-secondary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      width: 180px;
+      transition: border-color .15s;
+    }
+    .feel-other-input:focus { border-color: var(--border-primary); }
+    .feel-other-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .feel-other-input::placeholder { color: var(--text-tertiary); }
+
+    /* Color section */
+    .color-section-wrap { position: relative; }
+
+    .color-trigger {
+      display: flex; align-items: center; gap: 8px;
+      border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md);
+      padding: 7px 12px;
+      background: var(--bg-primary);
+      cursor: text; transition: border-color .15s;
+    }
+    .color-trigger:focus-within { border-color: var(--border-primary); }
+
+    .color-trigger-input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; flex: 1;
+      background: transparent; border: none; outline: none;
+      color: var(--text-primary);
+    }
+    .color-trigger-input::placeholder { color: var(--text-tertiary); }
+
+    .color-trigger-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: .5px solid rgba(255,255,255,.2);
+      flex-shrink: 0; transition: background .15s;
+    }
+
+    .color-dropdown {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: #1a1a1a;
+      border: .5px solid var(--border-secondary);
+      border-radius: var(--radius-md);
+      z-index: 150; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+      display: none;
+    }
+    .color-dropdown.open { display: block; }
+
+    .color-option {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 12px; width: 100%;
+      background: transparent; border: none;
+      color: var(--text-secondary);
+      cursor: pointer; text-align: left;
+      transition: background .1s, color .1s;
+    }
+    .color-option:hover { background: #222; color: var(--text-primary); }
+    .color-option.is-selected { color: var(--text-primary); }
+    .color-opt-dot {
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+      border: .5px solid rgba(255,255,255,.12);
+    }
+    .color-opt-wheel {
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+      background: conic-gradient(hsl(0,100%,55%),hsl(60,100%,55%),hsl(120,100%,55%),hsl(180,100%,55%),hsl(240,100%,55%),hsl(300,100%,55%),hsl(360,100%,55%));
+    }
+    .color-opt-sep { height: .5px; background: var(--border-secondary); margin: 2px 0; }
+
+    /* Color picker flyout */
+    .cp-flyout {
+      position: absolute; top: calc(100% + 8px); left: 0;
+      background: #1e1e1e; border: .5px solid #2e2e2e;
+      border-radius: 8px; padding: 10px; z-index: 200;
+      width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,.6);
+      display: none;
+    }
+    .cp-flyout.open { display: block; }
+
+    .cp-sb {
+      width: 180px; height: 120px; border-radius: 4px;
+      position: relative; cursor: crosshair; margin-bottom: 8px; overflow: hidden;
+    }
+    .cp-cursor {
+      position: absolute; width: 10px; height: 10px; border-radius: 50%;
+      border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4);
+      transform: translate(-50%,-50%); pointer-events: none;
+    }
+    .cp-hue-track {
+      height: 8px; border-radius: 4px;
+      background: linear-gradient(to right,hsl(0,100%,50%),hsl(30,100%,50%),hsl(60,100%,50%),hsl(90,100%,50%),hsl(120,100%,50%),hsl(150,100%,50%),hsl(180,100%,50%),hsl(210,100%,50%),hsl(240,100%,50%),hsl(270,100%,50%),hsl(300,100%,50%),hsl(330,100%,50%),hsl(360,100%,50%));
+      position: relative; cursor: pointer; margin-bottom: 10px;
+    }
+    .cp-hue-thumb {
+      position: absolute; width: 12px; height: 12px; border-radius: 50%;
+      background: #fff; top: 50%; transform: translate(-50%,-50%);
+      box-shadow: 0 0 0 1px rgba(0,0,0,.3); pointer-events: none; left: 0;
+    }
+    .cp-hex-row {
+      display: flex; align-items: center;
+      background: #2a2a2a; border: .5px solid #3a3a3a;
+      border-radius: 6px; padding: 4px 8px; gap: 4px;
+    }
+    .cp-hash { color: #555; font-family: 'JetBrains Mono',monospace; font-size: 12px; flex-shrink: 0; }
+    .cp-hex-input {
+      font-family: 'JetBrains Mono',monospace; font-size: 13px;
+      background: transparent; border: none; color: #f0f0ee;
+      outline: none; width: 100%; text-transform: uppercase;
+    }
+
     /* Type style pills */
     .type-pill {
       font-size: 14px;
@@ -429,6 +548,9 @@
           <fieldset>
             <legend class="field-legend" data-i18n="personality">Personality — pick up to 2</legend>
             <div class="pill-row" id="feel-row" role="group"></div>
+            <div class="feel-other-wrap" id="feel-other-wrap">
+              <input class="feel-other-input" id="feel-other-input" maxlength="20" autocomplete="off" spellcheck="false" aria-label="Describe the feeling" data-i18n-placeholder="otherPh">
+            </div>
           </fieldset>
         </div>
 
@@ -441,6 +563,27 @@
             <div class="pill-row" id="type-row" role="group"></div>
             <div class="format-sub-label" aria-hidden="true" data-i18n="isotype">Isotype</div>
             <div class="format-cards" id="isotype-row" role="group"></div>
+          </fieldset>
+        </div>
+
+        <div class="field-group">
+          <fieldset>
+            <legend class="field-legend"><span data-i18n="colors">Brand color</span> <span class="optional" data-i18n="optional">— optional</span></legend>
+            <div class="color-section-wrap">
+              <div class="color-trigger" id="color-trigger-wrap">
+                <input class="color-trigger-input" id="color-input" type="text" autocomplete="off" spellcheck="false" aria-label="Brand color" aria-haspopup="listbox" aria-autocomplete="list" data-i18n-placeholder="noneLabel">
+                <span class="color-trigger-dot" id="color-trigger-dot"></span>
+              </div>
+              <div class="color-dropdown" id="color-dropdown" role="listbox"></div>
+              <div class="cp-flyout" id="cp-flyout">
+                <div class="cp-sb" id="cp-sb"><div class="cp-cursor" id="cp-cursor"></div></div>
+                <div class="cp-hue-track" id="cp-hue-track"><div class="cp-hue-thumb" id="cp-hue-thumb"></div></div>
+                <div class="cp-hex-row">
+                  <span class="cp-hash">#</span>
+                  <input class="cp-hex-input" id="cp-hex" maxlength="6" spellcheck="false" autocomplete="off" aria-label="Hex color value">
+                </div>
+              </div>
+            </div>
           </fieldset>
         </div>
 
@@ -535,6 +678,11 @@
         brandRefPh: 'e.g. Apple, Stripe, early Nike',
         notesPh: "Colors you love, designers you admire, a vibe you can't quite name…",
         emailPh: 'you@example.com',
+        colors: 'Brand color',
+        colorCustom: 'Custom',
+        colorNames: ['White','Black','Blue','Red','Orange','Purple','Light blue','Green','Yellow','Brown','Gray'],
+        otherLabel: 'Other',
+        otherPh: 'Describe it…',
         feels: ['Bold','Minimal','Playful','Serious','Warm','Cool','Luxurious','Accessible','Irreverent','Trustworthy','Organic','Technical'],
         typeStyles: ['Serif','Sans-serif','Slab Serif','Script','Display','Geometric','Gothic','Condensed'],
         logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
@@ -583,6 +731,11 @@
         brandRefPh: 'ej. Apple, Stripe, Nike temprano',
         notesPh: 'Colores que te gustan, diseñadores que admiras, un estilo que no puedes nombrar…',
         emailPh: 'tú@ejemplo.com',
+        colors: 'Color de marca',
+        colorCustom: 'Personalizado',
+        colorNames: ['Blanco','Negro','Azul','Rojo','Naranja','Morado','Azul claro','Verde','Amarillo','Marrón','Gris'],
+        otherLabel: 'Otro',
+        otherPh: 'Descríbelo…',
         feels: ['Audaz','Minimalista','Juguetón','Serio','Cálido','Cool','Lujoso','Accesible','Irreverente','Confiable','Orgánico','Técnico'],
         typeStyles: ['Serif','Sin serifa','Slab Serif','Script','Display','Geométrica','Gótica','Condensada'],
         logotypeNames: { wordmark: 'Wordmark', lettermark: 'Lettermark' },
@@ -612,6 +765,7 @@
       rebuildFeelPills();
       rebuildTypePills();
       rebuildFormatCards();
+      buildColorSection();
       // Upload hint
       renderPreviews();
     }
@@ -627,6 +781,22 @@
     var selIsotypes = [];
     var isNoneIsotype = false;
     var selTypeStyles = [];
+    var otherPillSelected = false;
+    var otherText = '';
+    var selColor = null;
+    var cpH = 0, cpS = 100, cpV = 100, cpOpen = false;
+
+    function feelCount() { return selFeels.length + (otherPillSelected ? 1 : 0); }
+
+    // ─── Color presets ───────────────────────────────────────────────────────
+    var PRESET_COLORS = [
+      { id: 'white',     hex: '#ffffff' }, { id: 'black',     hex: '#111111' },
+      { id: 'blue',      hex: '#2563eb' }, { id: 'red',       hex: '#dc2626' },
+      { id: 'orange',    hex: '#ea580c' }, { id: 'purple',    hex: '#7c3aed' },
+      { id: 'lightblue', hex: '#38bdf8' }, { id: 'green',     hex: '#16a34a' },
+      { id: 'yellow',    hex: '#eab308' }, { id: 'brown',     hex: '#92400e' },
+      { id: 'gray',      hex: '#6b7280' },
+    ];
 
     var LOGOTYPES = [
       { id: 'wordmark',   svg: '<svg width="60" height="40" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><rect width="60" height="40" rx="3" fill="#1a1a1a"/><text x="30" y="26" font-family="Georgia,serif" font-size="18" font-weight="700" fill="#f0f0ee" text-anchor="middle">ab</text></svg>' },
@@ -640,19 +810,27 @@
     ];
 
     // ─── Feel pills ───────────────────────────────────────────────────────────
+    function updatePillDisabledState() {
+      var isFull = feelCount() >= 2;
+      document.querySelectorAll('#feel-row .feel-pill').forEach(function(b) {
+        if (b.getAttribute('aria-pressed') !== 'true') {
+          b.setAttribute('aria-disabled', isFull ? 'true' : 'false');
+        }
+      });
+    }
+
     function rebuildFeelPills() {
       var row = document.getElementById('feel-row');
-      var prevActive = selFeels.slice(); // preserve selection by index
+      var prevActive = selFeels.slice();
       row.innerHTML = '';
       selFeels = [];
       var labels = t('feels');
-      labels.forEach(function(label, i) {
+      labels.forEach(function(label) {
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'feel-pill';
         btn.textContent = label;
-        btn.dataset.idx = i;
-        var wasActive = prevActive[0] === labels[i] || prevActive[1] === labels[i];
+        var wasActive = prevActive.indexOf(label) > -1;
         btn.setAttribute('aria-pressed', wasActive ? 'true' : 'false');
         if (wasActive) selFeels.push(label);
         btn.addEventListener('click', function() {
@@ -660,18 +838,49 @@
           if (idx > -1) {
             selFeels.splice(idx, 1);
             btn.setAttribute('aria-pressed', 'false');
-          } else if (selFeels.length < 2) {
+          } else if (feelCount() < 2) {
             selFeels.push(label);
             btn.setAttribute('aria-pressed', 'true');
           }
-          row.querySelectorAll('.feel-pill').forEach(function(b) {
-            if (b.getAttribute('aria-pressed') !== 'true') {
-              b.setAttribute('aria-disabled', selFeels.length >= 2 ? 'true' : 'false');
-            }
-          });
+          updatePillDisabledState();
         });
         row.appendChild(btn);
       });
+
+      // "Other" pill
+      var otherBtn = document.createElement('button');
+      otherBtn.type = 'button';
+      otherBtn.className = 'feel-pill';
+      otherBtn.id = 'feel-other-pill';
+      otherBtn.textContent = t('otherLabel');
+      otherBtn.setAttribute('aria-pressed', otherPillSelected ? 'true' : 'false');
+      otherBtn.addEventListener('click', function() {
+        if (otherPillSelected) {
+          otherPillSelected = false; otherText = '';
+          otherBtn.setAttribute('aria-pressed', 'false');
+          var wrap = document.getElementById('feel-other-wrap');
+          wrap.style.display = 'none';
+          document.getElementById('feel-other-input').value = '';
+        } else if (feelCount() < 2) {
+          otherPillSelected = true;
+          otherBtn.setAttribute('aria-pressed', 'true');
+          var wrap = document.getElementById('feel-other-wrap');
+          wrap.style.display = 'block';
+          setTimeout(function() { document.getElementById('feel-other-input').focus(); }, 30);
+        }
+        updatePillDisabledState();
+      });
+      row.appendChild(otherBtn);
+
+      // Restore other input state after rebuild
+      var wrap = document.getElementById('feel-other-wrap');
+      if (otherPillSelected) {
+        wrap.style.display = 'block';
+        document.getElementById('feel-other-input').value = otherText;
+      } else {
+        wrap.style.display = 'none';
+      }
+      updatePillDisabledState();
     }
 
     // ─── Type style pills ────────────────────────────────────────────────────
@@ -788,6 +997,318 @@
       return card;
     }
 
+    // ─── Color name database ─────────────────────────────────────────────────
+    var COLOR_NAMES = [
+      ['Alice Blue','#f0f8ff'],['Antique White','#faebd7'],['Aqua','#00ffff'],
+      ['Aquamarine','#7fffd4'],['Azure','#f0ffff'],['Beige','#f5f5dc'],
+      ['Bisque','#ffe4c4'],['Black','#000000'],['Blanched Almond','#ffebcd'],
+      ['Blue','#0000ff'],['Blue Violet','#8a2be2'],['Brown','#a52a2a'],
+      ['Burlywood','#deb887'],['Cadet Blue','#5f9ea0'],['Chartreuse','#7fff00'],
+      ['Chocolate','#d2691e'],['Coral','#ff7f50'],['Cornflower Blue','#6495ed'],
+      ['Cornsilk','#fff8dc'],['Crimson','#dc143c'],['Cyan','#00ffff'],
+      ['Dark Blue','#00008b'],['Dark Cyan','#008b8b'],['Dark Goldenrod','#b8860b'],
+      ['Dark Gray','#a9a9a9'],['Dark Green','#006400'],['Dark Khaki','#bdb76b'],
+      ['Dark Magenta','#8b008b'],['Dark Olive Green','#556b2f'],['Dark Orange','#ff8c00'],
+      ['Dark Orchid','#9932cc'],['Dark Red','#8b0000'],['Dark Salmon','#e9967a'],
+      ['Dark Sea Green','#8fbc8f'],['Dark Slate Blue','#483d8b'],['Dark Slate Gray','#2f4f4f'],
+      ['Dark Turquoise','#00ced1'],['Dark Violet','#9400d3'],['Deep Pink','#ff1493'],
+      ['Deep Sky Blue','#00bfff'],['Dim Gray','#696969'],['Dodger Blue','#1e90ff'],
+      ['Firebrick','#b22222'],['Floral White','#fffaf0'],['Forest Green','#228b22'],
+      ['Fuchsia','#ff00ff'],['Gainsboro','#dcdcdc'],['Ghost White','#f8f8ff'],
+      ['Gold','#ffd700'],['Goldenrod','#daa520'],['Gray','#808080'],
+      ['Green','#008000'],['Green Yellow','#adff2f'],['Honeydew','#f0fff0'],
+      ['Hot Pink','#ff69b4'],['Indian Red','#cd5c5c'],['Indigo','#4b0082'],
+      ['Ivory','#fffff0'],['Khaki','#f0e68c'],['Lavender','#e6e6fa'],
+      ['Lavender Blush','#fff0f5'],['Lawn Green','#7cfc00'],['Lemon Chiffon','#fffacd'],
+      ['Light Blue','#add8e6'],['Light Coral','#f08080'],['Light Cyan','#e0ffff'],
+      ['Light Goldenrod','#fafad2'],['Light Gray','#d3d3d3'],['Light Green','#90ee90'],
+      ['Light Pink','#ffb6c1'],['Light Salmon','#ffa07a'],['Light Sea Green','#20b2aa'],
+      ['Light Sky Blue','#87cefa'],['Light Slate Gray','#778899'],['Light Steel Blue','#b0c4de'],
+      ['Light Yellow','#ffffe0'],['Lime','#00ff00'],['Lime Green','#32cd32'],
+      ['Linen','#faf0e6'],['Magenta','#ff00ff'],['Maroon','#800000'],
+      ['Medium Aquamarine','#66cdaa'],['Medium Blue','#0000cd'],['Medium Orchid','#ba55d3'],
+      ['Medium Purple','#9370db'],['Medium Sea Green','#3cb371'],['Medium Slate Blue','#7b68ee'],
+      ['Medium Spring Green','#00fa9a'],['Medium Turquoise','#48d1cc'],['Medium Violet Red','#c71585'],
+      ['Midnight Blue','#191970'],['Mint Cream','#f5fffa'],['Misty Rose','#ffe4e1'],
+      ['Moccasin','#ffe4b5'],['Navajo White','#ffdead'],['Navy','#000080'],
+      ['Old Lace','#fdf5e6'],['Olive','#808000'],['Olive Drab','#6b8e23'],
+      ['Orange','#ffa500'],['Orange Red','#ff4500'],['Orchid','#da70d6'],
+      ['Pale Goldenrod','#eee8aa'],['Pale Green','#98fb98'],['Pale Turquoise','#afeeee'],
+      ['Pale Violet Red','#db7093'],['Papaya Whip','#ffefd5'],['Peach Puff','#ffdab9'],
+      ['Peru','#cd853f'],['Pink','#ffc0cb'],['Plum','#dda0dd'],
+      ['Powder Blue','#b0e0e6'],['Purple','#800080'],['Red','#ff0000'],
+      ['Rosy Brown','#bc8f8f'],['Royal Blue','#4169e1'],['Saddle Brown','#8b4513'],
+      ['Salmon','#fa8072'],['Sandy Brown','#f4a460'],['Sea Green','#2e8b57'],
+      ['Seashell','#fff5ee'],['Sienna','#a0522d'],['Silver','#c0c0c0'],
+      ['Sky Blue','#87ceeb'],['Slate Blue','#6a5acd'],['Slate Gray','#708090'],
+      ['Snow','#fffafa'],['Spring Green','#00ff7f'],['Steel Blue','#4682b4'],
+      ['Tan','#d2b48c'],['Teal','#008080'],['Thistle','#d8bfd8'],
+      ['Tomato','#ff6347'],['Turquoise','#40e0d0'],['Violet','#ee82ee'],
+      ['Wheat','#f5deb3'],['White','#ffffff'],['White Smoke','#f5f5f5'],
+      ['Yellow','#ffff00'],['Yellow Green','#9acd32'],
+    ];
+
+    function findClosestColorName(hex) {
+      hex = hex.replace('#','');
+      var r1=parseInt(hex.slice(0,2),16), g1=parseInt(hex.slice(2,4),16), b1=parseInt(hex.slice(4,6),16);
+      var minD=Infinity, closest=null;
+      COLOR_NAMES.forEach(function(c) {
+        var h=c[1].replace('#','');
+        var d=(r1-parseInt(h.slice(0,2),16))*(r1-parseInt(h.slice(0,2),16))
+             +(g1-parseInt(h.slice(2,4),16))*(g1-parseInt(h.slice(2,4),16))
+             +(b1-parseInt(h.slice(4,6),16))*(b1-parseInt(h.slice(4,6),16));
+        if(d<minD){minD=d;closest=c;}
+      });
+      return closest; // [name, hex]
+    }
+
+    function findColorsByName(query) {
+      var lower = query.toLowerCase().trim();
+      return COLOR_NAMES.filter(function(c) { return c[0].toLowerCase().includes(lower); });
+    }
+
+    function parseHex(val) {
+      var h = val.replace(/^#/,'').trim();
+      if (/^[0-9a-fA-F]{6}$/.test(h)) return '#'+h.toLowerCase();
+      if (/^[0-9a-fA-F]{3}$/.test(h)) return '#'+h.split('').map(function(c){return c+c;}).join('').toLowerCase();
+      return null;
+    }
+
+    // ─── Color section ───────────────────────────────────────────────────────
+    var colorDropdownOpen = false;
+
+    function buildColorSection() { renderDropdown(''); }
+
+    function renderDropdown(query) {
+      var dd = document.getElementById('color-dropdown');
+      if (!dd) return;
+      dd.innerHTML = '';
+      var inp = document.getElementById('color-input');
+      var hexFromQuery = parseHex(query);
+
+      // None
+      dd.appendChild(makeColorBtn(null, t('noneLabel'), null));
+      sep(dd);
+
+      if (!query) {
+        // Default: show presets
+        var names = t('colorNames');
+        PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
+      } else if (hexFromQuery) {
+        // Hex input: show closest name match
+        var closest = findClosestColorName(hexFromQuery);
+        if (closest) {
+          var closestBtn = makeColorBtn(hexFromQuery, '≈ '+closest[0], hexFromQuery);
+          closestBtn.style.fontStyle = 'italic';
+          dd.appendChild(closestBtn);
+          sep(dd);
+        }
+        var names = t('colorNames');
+        PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
+      } else {
+        // Name search
+        var matches = findColorsByName(query);
+        var list = matches.length > 0 ? matches.slice(0,10) : [];
+        list.forEach(function(c){ dd.appendChild(makeColorBtn(c[1], c[0], c[1])); });
+        if (matches.length === 0) {
+          var names = t('colorNames');
+          PRESET_COLORS.forEach(function(c,i){ dd.appendChild(makeColorBtn(c.hex, names[i], c.hex)); });
+        }
+      }
+
+      sep(dd);
+      dd.appendChild(makeColorBtn('__custom__', t('colorCustom'), null, true));
+    }
+
+    function sep(dd) {
+      var s = document.createElement('div'); s.className='color-opt-sep'; s.setAttribute('aria-hidden','true'); dd.appendChild(s);
+    }
+
+    function makeColorBtn(value, label, hex, isWheel) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'color-option'; btn.dataset.value = value || '';
+      var dot = document.createElement('span');
+      if (isWheel) { dot.className='color-opt-wheel'; }
+      else { dot.className='color-opt-dot'; if(hex) dot.style.background=hex; else dot.style.opacity='0'; }
+      btn.appendChild(dot);
+      var lbl = document.createElement('span'); lbl.textContent = label; btn.appendChild(lbl);
+      if ((value && value === selColor) || (value==='__custom__' && selColor && !isPreset(selColor)))
+        btn.classList.add('is-selected');
+      btn.addEventListener('click', function() {
+        if (value === '__custom__') {
+          closeColorDropdown();
+          document.getElementById('color-input').blur();
+          openPicker();
+        } else {
+          selColor = value || null;
+          closeColorDropdown();
+          closePicker();
+          updateColorDot(selColor);
+          resolveInputValue();
+        }
+      });
+      return btn;
+    }
+
+    function isPreset(hex) { return !!PRESET_COLORS.find(function(c){ return c.hex===hex; }); }
+
+    function openColorDropdown()  { document.getElementById('color-dropdown').classList.add('open');    colorDropdownOpen=true; }
+    function closeColorDropdown() { document.getElementById('color-dropdown').classList.remove('open'); colorDropdownOpen=false; }
+
+    function updateColorDot(hex) {
+      var dot = document.getElementById('color-trigger-dot');
+      if (!dot) return;
+      if (hex) { dot.style.background=hex; dot.style.border='none'; }
+      else { dot.style.background='transparent'; dot.style.border='.5px solid rgba(255,255,255,.2)'; }
+    }
+
+    function resolveInputValue() {
+      var inp = document.getElementById('color-input');
+      if (!inp) return;
+      if (!selColor) { inp.value=''; return; }
+      var pi = -1;
+      for(var i=0;i<PRESET_COLORS.length;i++){ if(PRESET_COLORS[i].hex===selColor){pi=i;break;} }
+      if (pi>-1) { inp.value = t('colorNames')[pi]; return; }
+      var closest = findClosestColorName(selColor);
+      inp.value = closest ? closest[0] : selColor;
+    }
+
+    function handleColorInput(val) {
+      var trimmed = val.trim();
+      if (!trimmed) { selColor=null; updateColorDot(null); renderDropdown(''); return; }
+      var hex = parseHex(trimmed);
+      if (hex) {
+        selColor = hex; updateColorDot(hex); renderDropdown(trimmed);
+      } else {
+        var matches = findColorsByName(trimmed);
+        if (matches.length>0) { selColor=matches[0][1]; updateColorDot(selColor); }
+        else { selColor=null; updateColorDot(null); }
+        renderDropdown(trimmed);
+      }
+    }
+
+    function initColorSection() {
+      var inp  = document.getElementById('color-input');
+      var wrap = document.getElementById('color-trigger-wrap');
+
+      // Prevent document click from closing when interacting inside
+      wrap.addEventListener('click', function(e){ e.stopPropagation(); });
+      document.getElementById('color-dropdown').addEventListener('mousedown', function(e){ e.preventDefault(); }); // keep input focus
+      document.getElementById('color-dropdown').addEventListener('click', function(e){ e.stopPropagation(); });
+
+      inp.addEventListener('focus', function(){ renderDropdown(''); openColorDropdown(); });
+      inp.addEventListener('input', function(){ handleColorInput(this.value); });
+      inp.addEventListener('keydown', function(e){
+        if(e.key==='Escape'||e.key==='Enter'){ closeColorDropdown(); inp.blur(); }
+      });
+      inp.addEventListener('blur', function(){
+        setTimeout(function(){ if(!colorDropdownOpen){ resolveInputValue(); } }, 150);
+      });
+    }
+
+    function refreshColorUI() {
+      updateColorDot(selColor);
+      resolveInputValue();
+    }
+
+    // ─── Color picker ─────────────────────────────────────────────────────────
+    function hsvToHex(h, s, v) {
+      s /= 100; v /= 100;
+      var r, g, b, i = Math.floor(h / 60) % 6, f = (h / 60) - Math.floor(h / 60);
+      var p = v*(1-s), q = v*(1-f*s), tv = v*(1-(1-f)*s);
+      if      (i===0){r=v; g=tv;b=p;}  else if (i===1){r=q; g=v; b=p;}
+      else if (i===2){r=p; g=v; b=tv;} else if (i===3){r=p; g=q; b=v;}
+      else if (i===4){r=tv;g=p; b=v;}  else              {r=v; g=p; b=q;}
+      var h2 = function(x){ return Math.round(x*255).toString(16).padStart(2,'0'); };
+      return '#'+h2(r)+h2(g)+h2(b);
+    }
+
+    function hexToHsv(hex) {
+      hex = hex.replace('#','');
+      if (hex.length===3) hex = hex.split('').map(function(c){return c+c;}).join('');
+      if (hex.length!==6) return null;
+      var r=parseInt(hex.slice(0,2),16)/255, g=parseInt(hex.slice(2,4),16)/255, b=parseInt(hex.slice(4,6),16)/255;
+      var max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+      var h=0, s=max===0?0:d/max, v=max;
+      if (d!==0) {
+        if (max===r) h=((g-b)/d+(g<b?6:0))/6;
+        else if (max===g) h=((b-r)/d+2)/6;
+        else h=((r-g)/d+4)/6;
+      }
+      return {h:h*360, s:s*100, v:v*100};
+    }
+
+    function cpRefresh() {
+      var sb = document.getElementById('cp-sb');
+      sb.style.background = 'linear-gradient(to bottom,transparent,#000),linear-gradient(to right,#fff,hsl('+cpH+',100%,50%))';
+      var cursor = document.getElementById('cp-cursor');
+      cursor.style.left = cpS+'%'; cursor.style.top = (100-cpV)+'%';
+      document.getElementById('cp-hue-thumb').style.left = (cpH/360*100)+'%';
+      document.getElementById('cp-hex').value = hsvToHex(cpH,cpS,cpV).replace('#','').toUpperCase();
+      selColor = hsvToHex(cpH,cpS,cpV);
+      refreshColorUI();
+    }
+
+    function openPicker() {
+      if (selColor && !PRESET_COLORS.find(function(c){return c.hex===selColor;})) {
+        var hsv = hexToHsv(selColor); if (hsv){cpH=hsv.h;cpS=hsv.s;cpV=hsv.v;}
+      } else { cpH=0; cpS=100; cpV=100; }
+      document.getElementById('cp-flyout').classList.add('open');
+      cpOpen = true; cpRefresh();
+    }
+
+    function closePicker() {
+      document.getElementById('cp-flyout').classList.remove('open');
+      cpOpen = false;
+    }
+
+    function togglePicker() { if (cpOpen) closePicker(); else openPicker(); }
+
+    function initColorPicker() {
+      var sb = document.getElementById('cp-sb');
+      var hueTrack = document.getElementById('cp-hue-track');
+      var hexInput = document.getElementById('cp-hex');
+
+      function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+
+      function sbUpdate(e) {
+        var r = sb.getBoundingClientRect();
+        var cx = e.touches ? e.touches[0].clientX : e.clientX;
+        var cy = e.touches ? e.touches[0].clientY : e.clientY;
+        cpS = clamp((cx-r.left)/r.width,0,1)*100;
+        cpV = (1-clamp((cy-r.top)/r.height,0,1))*100;
+        cpRefresh();
+      }
+      var sbDrag = false;
+      sb.addEventListener('mousedown', function(e){ sbDrag=true; sbUpdate(e); e.preventDefault(); });
+      document.addEventListener('mousemove', function(e){ if(sbDrag) sbUpdate(e); });
+      document.addEventListener('mouseup', function(){ sbDrag=false; });
+
+      function hueUpdate(e) {
+        var r = hueTrack.getBoundingClientRect();
+        var cx = e.touches ? e.touches[0].clientX : e.clientX;
+        cpH = clamp((cx-r.left)/r.width,0,1)*360;
+        cpRefresh();
+      }
+      var hueDrag = false;
+      hueTrack.addEventListener('mousedown', function(e){ hueDrag=true; hueUpdate(e); e.preventDefault(); });
+      document.addEventListener('mousemove', function(e){ if(hueDrag) hueUpdate(e); });
+      document.addEventListener('mouseup', function(){ hueDrag=false; });
+
+      hexInput.addEventListener('input', function() {
+        var hex = this.value.replace(/[^0-9a-fA-F]/g,'');
+        if (hex.length===6) { var hsv=hexToHsv(hex); if(hsv){cpH=hsv.h;cpS=hsv.s;cpV=hsv.v;cpRefresh();} }
+      });
+
+      document.getElementById('cp-flyout').addEventListener('click', function(e){ e.stopPropagation(); });
+      document.addEventListener('click', function(){ if(cpOpen) closePicker(); if(colorDropdownOpen) closeColorDropdown(); });
+    }
+
+    // ─── Other feel input ─────────────────────────────────────────────────────
+    document.getElementById('feel-other-input').addEventListener('input', function() {
+      otherText = this.value;
+    });
+
     // ─── Image upload ────────────────────────────────────────────────────────
     var selectedFiles = [];
 
@@ -841,7 +1362,7 @@
 
       if (!name)        { showErr(t('errName'));        document.getElementById('brand-name').focus();    return; }
       if (!desc)        { showErr(t('errDesc'));        document.getElementById('brand-desc').focus();    return; }
-      if (!selFeels.length) { showErr(t('errPersonality')); return; }
+      if (!selFeels.length && !otherPillSelected) { showErr(t('errPersonality')); return; }
       if (!selLogotypes.length && !selIsotypes.length && !isNoneIsotype) { showErr(t('errFormat')); return; }
       if (!selLogotypes.length && isNoneIsotype) { showErr(t('errLogotype')); return; }
       if (!clientEmail) { showErr(t('errEmail'));       document.getElementById('client-email').focus();  return; }
@@ -860,7 +1381,10 @@
         fd.append('brandRef', brandRef);
         fd.append('notes', notes);
         fd.append('clientEmail', clientEmail);
-        fd.append('feels', JSON.stringify(selFeels));
+        var allFeels = selFeels.slice();
+        if (otherPillSelected) allFeels.push(otherText || t('otherLabel'));
+        fd.append('feels', JSON.stringify(allFeels));
+        fd.append('color', selColor || '');
         fd.append('logotypes', JSON.stringify(selLogotypes));
         fd.append('isotypes', JSON.stringify(selIsotypes));
         fd.append('isNone', String(isNoneIsotype));
@@ -895,6 +1419,8 @@
 
     // ─── Init ────────────────────────────────────────────────────────────────
     applyLanguage();
+    initColorPicker();
+    initColorSection();
   </script>
 </body>
 </html>
