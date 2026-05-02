@@ -31,6 +31,7 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Skip link */
@@ -112,6 +113,7 @@
       font-weight: 300;
       line-height: 1.2;
       margin-bottom: .4rem;
+      text-wrap: balance;
     }
 
     h1 em {
@@ -558,6 +560,9 @@
       display: none;
     }
 
+    /* Touch targets */
+    button, [role="button"] { touch-action: manipulation; }
+
     /* Success */
     .success {
       display: none;
@@ -570,6 +575,36 @@
     .success-icon { font-size: 20px; color: var(--text-secondary); margin-bottom: .75rem; }
     .success-title { font-size: 16px; font-weight: 400; margin-bottom: .4rem; }
     .success-sub { font-size: 12px; color: var(--text-secondary); }
+
+    /* ─── Mobile ──────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .container { padding: 1.75rem 1.25rem 4rem; }
+      h1 { font-size: 26px; }
+
+      /* Prevent iOS auto-zoom on focus (requires ≥16px) */
+      .text-input,
+      .textarea-input,
+      .feel-other-input,
+      .color-trigger-input,
+      .cp-hex-input { font-size: 16px; }
+
+      /* Bigger touch targets on pills */
+      .feel-pill { padding: 9px 15px; }
+
+      /* Full-width CTA */
+      .cta-btn { width: 100%; justify-content: center; }
+
+      /* Color trigger stretches to fill */
+      .color-trigger { width: 100%; }
+      .color-trigger-input { flex: 1; width: auto; min-width: 0; }
+
+      /* Color picker flyout stays within viewport */
+      .cp-flyout { width: calc(100vw - 2.5rem); max-width: 280px; }
+      .cp-sb { width: 100%; }
+
+      /* Tooltip: anchor to right so it doesn't bleed off-screen */
+      .info-tooltip { left: auto; right: 0; }
+    }
   </style>
 </head>
 <body>
