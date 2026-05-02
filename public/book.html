@@ -242,10 +242,6 @@
       .textarea-input,
       .feel-other-input { font-size: 16px; }
 
-      /* Truncate long placeholders with ellipsis */
-      .text-input::placeholder,
-      .textarea-input::placeholder,
-      .feel-other-input::placeholder { text-overflow: ellipsis; }
 
       /* Bigger touch targets on pills */
       .feel-pill { padding: 9px 15px; }
@@ -365,6 +361,7 @@
   <script>
     // ─── i18n ────────────────────────────────────────────────────────────────
     var currentLang = window.location.pathname.startsWith('/es') ? 'es' : 'en';
+    var mq = window.matchMedia('(max-width: 600px)');
 
     var STRINGS = {
       en: {
@@ -379,18 +376,21 @@
         bookTitlePh: 'e.g. The Midnight Library by Matt Haig',
         logline: 'The logline (or core conflict)',
         loglinePh: 'e.g. A detective must solve a murder on a generation ship before it reaches its destination.',
+        loglinePhSm: 'e.g. A detective solving a murder on a generation ship.',
         vibe: 'Vibe & tone — pick up to 3',
         coverFocus: 'Cover focus — select at least one',
         typeStyle: 'Typography style',
         artStyle: 'Art style',
         colorMood: 'Dominant color / mood',
         colorMoodPh: 'e.g. Deep blues, neon accents, or "just make it look cold."',
+        colorMoodPhSm: 'e.g. Deep blues, neon, or "cold."',
         avoid: 'What to avoid',
         avoidPh: 'e.g. No floating heads, no generic fantasy fonts.',
         neighbors: 'Shelf neighbors',
         neighborsPh: 'e.g. Dune, The Hunger Games, Neuromancer.',
         notes: 'Anything else we should know',
         notesPh: "Specific symbols in the story, themes, or a vibe you can't quite name…",
+        notesPhSm: "Symbols, themes, or a vibe you can't name…",
         images: 'Visual references',
         imagesOptional: '— optional, up to 5 images',
         email: 'Your email',
@@ -432,18 +432,21 @@
         bookTitlePh: 'ej. La biblioteca de medianoche de Matt Haig',
         logline: 'La sinopsis (o conflicto central)',
         loglinePh: 'ej. Un detective debe resolver un asesinato en una nave generacional antes de llegar a su destino.',
+        loglinePhSm: 'ej. Un detective resuelve un asesinato en una nave generacional.',
         vibe: 'Vibe y tono — elige hasta 3',
         coverFocus: 'Enfoque de portada — selecciona al menos uno',
         typeStyle: 'Estilo tipográfico',
         artStyle: 'Estilo artístico',
         colorMood: 'Color dominante / ambiente',
         colorMoodPh: 'ej. Azules profundos, acentos de neón, o "solo hazlo ver frío."',
+        colorMoodPhSm: 'ej. Azules profundos, neón, o "frío."',
         avoid: 'Qué evitar',
         avoidPh: 'ej. Sin cabezas flotantes, sin fuentes fantásticas genéricas.',
         neighbors: 'Libros comparables',
         neighborsPh: 'ej. Dune, Los juegos del hambre, Neuromancer.',
         notes: '¿Algo más que debamos saber?',
         notesPh: 'Símbolos específicos en la historia, temas, o un ambiente que no puedes nombrar…',
+        notesPhSm: 'Símbolos, temas, o un ambiente…',
         images: 'Referencias visuales',
         imagesOptional: '— opcional, hasta 5 imágenes',
         email: 'Tu correo electrónico',
@@ -485,7 +488,9 @@
         el.textContent = t(key);
       });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
-        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+        var key = el.getAttribute('data-i18n-placeholder');
+        var smKey = key + 'Sm';
+        el.placeholder = (mq.matches && STRINGS[currentLang][smKey]) ? t(smKey) : t(key);
       });
       var btn = document.getElementById('lang-btn');
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-1px"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>' + t('langToggle');
@@ -847,6 +852,7 @@
 
     // ─── Init ────────────────────────────────────────────────────────────────
     applyLanguage();
+    mq.addEventListener('change', applyLanguage);
   </script>
 </body>
 </html>

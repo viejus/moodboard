@@ -588,11 +588,6 @@
       .color-trigger-input,
       .cp-hex-input { font-size: 16px; }
 
-      /* Truncate long placeholders with ellipsis */
-      .text-input::placeholder,
-      .textarea-input::placeholder,
-      .feel-other-input::placeholder,
-      .color-trigger-input::placeholder { text-overflow: ellipsis; }
 
       /* Bigger touch targets on pills */
       .feel-pill { padding: 9px 15px; }
@@ -741,6 +736,7 @@
   <script>
     // ─── i18n ────────────────────────────────────────────────────────────────
     var currentLang = window.location.pathname.startsWith('/es') ? 'es' : 'en';
+    var mq = window.matchMedia('(max-width: 600px)');
 
     var STRINGS = {
       en: {
@@ -789,6 +785,8 @@
         avoidPh: 'e.g. gradients, fintech clichés',
         brandRefPh: 'e.g. Apple, Stripe, Patagonia',
         notesPh: "Colors you love, designers you admire, a vibe you can't quite name…",
+        notesPhSm: "Colors, designers, or a vibe you can't name…",
+        whatYouDoPhSm: 'e.g. electric bikes for cities',
         emailPh: 'you@example.com',
         colors: 'Brand color',
         colorCustom: 'Custom',
@@ -846,6 +844,8 @@
         avoidPh: 'ej. degradados, clichés de fintech',
         brandRefPh: 'ej. Apple, Stripe, Patagonia',
         notesPh: 'Colores que te gustan, diseñadores que admiras, un estilo que no puedes nombrar…',
+        notesPhSm: 'Colores, diseñadores, un estilo…',
+        whatYouDoPhSm: 'ej. bicicletas eléctricas para ciudades',
         emailPh: 'tu@ejemplo.com',
         colors: 'Color de marca',
         colorCustom: 'Personalizado',
@@ -871,7 +871,9 @@
       });
       // Placeholders
       document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
-        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+        var key = el.getAttribute('data-i18n-placeholder');
+        var smKey = key + 'Sm';
+        el.placeholder = (mq.matches && STRINGS[currentLang][smKey]) ? t(smKey) : t(key);
       });
       // Lang button
       var btn = document.getElementById('lang-btn');
@@ -1508,6 +1510,7 @@
 
     // ─── Init ────────────────────────────────────────────────────────────────
     applyLanguage();
+    mq.addEventListener('change', applyLanguage);
     initColorPicker();
     initColorSection();
   </script>
