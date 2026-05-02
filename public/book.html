@@ -159,6 +159,18 @@
     .fmt-card-name { font-size: 10px; font-weight: 500; color: var(--text-tertiary); letter-spacing: .03em; }
     .fmt-card[aria-pressed="true"] .fmt-card-name { color: var(--text-primary); }
 
+    /* Other vibe input */
+    .feel-other-wrap { margin-top: 8px; display: none; }
+    .feel-other-input {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      padding: 5px 12px; border-radius: 20px;
+      border: .5px solid var(--border-secondary); background: var(--bg-primary);
+      color: var(--text-primary); outline: none; width: 180px; transition: border-color .15s;
+    }
+    .feel-other-input:focus { border-color: var(--border-primary); }
+    .feel-other-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .feel-other-input::placeholder { color: var(--text-tertiary); }
+
     /* Upload */
     .upload-area {
       border: .5px dashed var(--border-secondary); border-radius: var(--radius-md);
@@ -252,6 +264,9 @@
           <fieldset>
             <legend class="field-legend" data-i18n="vibe">Vibe &amp; tone — pick up to 3</legend>
             <div class="pill-row" id="vibe-row" role="group"></div>
+            <div class="feel-other-wrap" id="vibe-other-wrap">
+              <input class="feel-other-input" id="vibe-other-input" maxlength="20" autocomplete="off" spellcheck="false" data-i18n-placeholder="otherPh">
+            </div>
             <p class="field-hint" id="hint-vibe" role="alert"></p>
           </fieldset>
         </div>
@@ -362,6 +377,8 @@
         successSub: "We'll get back to you with your cover direction.",
         footerMadeWith: 'Made with',
         footerBy: 'by',
+        otherLabel: 'Other',
+        otherPh: 'Describe it…',
         langToggle: 'EN',
         langToggleLabel: 'Switch to Spanish',
         emailPh: 'you@example.com',
@@ -413,6 +430,8 @@
         successSub: 'Nos pondremos en contacto contigo con tu dirección de portada.',
         footerMadeWith: 'Hecho con',
         footerBy: 'por',
+        otherLabel: 'Otro',
+        otherPh: 'Descríbelo…',
         langToggle: 'ES',
         langToggleLabel: 'Switch to English',
         emailPh: 'tu@ejemplo.com',
@@ -468,6 +487,8 @@
 
     // ─── State ───────────────────────────────────────────────────────────────
     var selVibes = [];
+    var vibeOtherSelected = false;
+    var vibeOtherText = '';
     var selFocuses = [];
     var selTypeStyles = [];
     var selArtStyles = [];
@@ -505,6 +526,8 @@
     ];
 
     // ─── Vibe pills ──────────────────────────────────────────────────────────
+    function vibeCount() { return selVibes.length + (vibeOtherSelected ? 1 : 0); }
+
     function rebuildVibePills() {
       var row = document.getElementById('vibe-row');
       var prevActive = selVibes.slice();
@@ -524,7 +547,7 @@
           if (idx > -1) {
             selVibes.splice(idx, 1);
             btn.setAttribute('aria-pressed', 'false');
-          } else if (selVibes.length < 3) {
+          } else if (vibeCount() < 3) {
             selVibes.push(key);
             btn.setAttribute('aria-pressed', 'true');
           }
@@ -533,11 +556,43 @@
         });
         row.appendChild(btn);
       });
+
+      // "Other" pill
+      var otherBtn = document.createElement('button');
+      otherBtn.type = 'button'; otherBtn.className = 'feel-pill'; otherBtn.id = 'vibe-other-pill';
+      otherBtn.textContent = t('otherLabel');
+      otherBtn.setAttribute('aria-pressed', vibeOtherSelected ? 'true' : 'false');
+      otherBtn.addEventListener('click', function() {
+        if (vibeOtherSelected) {
+          vibeOtherSelected = false; vibeOtherText = '';
+          otherBtn.setAttribute('aria-pressed', 'false');
+          document.getElementById('vibe-other-wrap').style.display = 'none';
+          document.getElementById('vibe-other-input').value = '';
+        } else if (vibeCount() < 3) {
+          vibeOtherSelected = true;
+          otherBtn.setAttribute('aria-pressed', 'true');
+          document.getElementById('vibe-other-wrap').style.display = 'block';
+          setTimeout(function() { document.getElementById('vibe-other-input').focus(); }, 30);
+        }
+        updateVibeDisabled();
+        clearHint('hint-vibe', 'vibe-row');
+      });
+      row.appendChild(otherBtn);
+
+      // Restore other input state after rebuild
+      var wrap = document.getElementById('vibe-other-wrap');
+      if (vibeOtherSelected) {
+        wrap.style.display = 'block';
+        document.getElementById('vibe-other-input').value = vibeOtherText;
+      } else {
+        wrap.style.display = 'none';
+      }
+
       updateVibeDisabled();
     }
 
     function updateVibeDisabled() {
-      var full = selVibes.length >= 3;
+      var full = vibeCount() >= 3;
       document.querySelectorAll('#vibe-row .feel-pill').forEach(function(b) {
         if (b.getAttribute('aria-pressed') !== 'true')
           b.setAttribute('aria-disabled', full ? 'true' : 'false');
@@ -617,6 +672,10 @@
     }
 
     // ─── Image upload ────────────────────────────────────────────────────────
+    document.getElementById('vibe-other-input').addEventListener('input', function() {
+      vibeOtherText = this.value;
+    });
+
     var selectedFiles = [];
 
     document.getElementById('img-upload').addEventListener('change', function(e) {
@@ -700,7 +759,7 @@
         document.getElementById('logline').classList.add('field-error');
         showHint('hint-logline', 'errLogline'); hasErrors = true;
       }
-      if (!selVibes.length) {
+      if (!selVibes.length && !vibeOtherSelected) {
         document.getElementById('vibe-row').classList.add('group-error');
         showHint('hint-vibe', 'errVibe'); hasErrors = true;
       }
@@ -729,7 +788,9 @@
         fd.append('neighbors', neighbors);
         fd.append('notes', notes);
         fd.append('clientEmail', clientEmail);
-        fd.append('vibes', JSON.stringify(selVibes));
+        var allVibes = selVibes.slice();
+        if (vibeOtherSelected) allVibes.push(vibeOtherText || t('otherLabel'));
+        fd.append('vibes', JSON.stringify(allVibes));
         fd.append('focuses', JSON.stringify(selFocuses));
         fd.append('typeStyles', JSON.stringify(selTypeStyles));
         fd.append('artStyles', JSON.stringify(selArtStyles));

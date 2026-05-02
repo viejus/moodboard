@@ -14,7 +14,8 @@
       "Bash(git push *)",
       "WebFetch(domain:lucide.dev)",
       "Bash(node -e \"const fs=require\\('fs'\\); console.log\\(fs.existsSync\\('public/favicon.svg'\\) ? 'exists' : 'missing'\\)\")",
-      "Bash(gh pr *)"
+      "Bash(gh pr *)",
+      "Bash(git revert *)"
     ]
   }
 }
